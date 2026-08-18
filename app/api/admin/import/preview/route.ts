@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server'; import { loadProviderFeed } from '@/lib/providers/feed';
+export async function POST(req:Request){ try{ const {provider,feedUrl,limit}=await req.json(); if(!['gamemonetize','gamedistribution','generic'].includes(provider)) return NextResponse.json({error:'Unsupported provider'},{status:400}); const games=await loadProviderFeed(provider,feedUrl,Number(limit)||100); return NextResponse.json({games}); }catch(e:any){ return NextResponse.json({error:e.message||'Import preview failed'},{status:400}); } }

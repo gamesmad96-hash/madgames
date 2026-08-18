@@ -1,0 +1,1 @@
+import Link from 'next/link'; export default function NotFound(){return <div className="pageShell narrow"><div className="notFoundCard"><div className="notFoundEmoji">🎮</div><div className="eyebrow">404</div><h1>Game Over? Not Quite.</h1><p>The page disappeared, but the games are still here.</p><Link className="primaryBtn" href="/">Play games</Link></div></div>}

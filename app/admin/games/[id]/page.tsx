@@ -1,0 +1,2 @@
+import { notFound } from 'next/navigation'; import { getGameById } from '@/lib/catalog'; import { AdminGameForm } from '@/components/AdminGameForm';
+export default async function EditGame({params}:{params:Promise<{id:string}>}){const {id}=await params;const game=await getGameById(id);if(!game)notFound();return <div className="pageShell"><div className="pageTitle"><div className="eyebrow">EDIT GAME</div><h1>{game.title}</h1><p>Provider metadata can be edited here. Use only licensed embed URLs.</p></div><AdminGameForm game={game}/></div>}

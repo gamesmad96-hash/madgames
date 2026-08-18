@@ -1,0 +1,1 @@
+import {getGames} from '@/lib/catalog'; import {SearchClient} from '@/components/SearchClient'; export default async function SearchPage(){const games=await getGames(500);return <div className="pageShell"><div className="pageTitle"><div className="eyebrow">FIND YOUR NEXT GAME</div><h1>Search games</h1></div><SearchClient games={games}/></div>}

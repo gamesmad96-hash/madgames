@@ -1,0 +1,1 @@
+export function InfoPage({eyebrow,title,children}:{eyebrow:string;title:string;children:React.ReactNode}){return <div className="pageShell narrow"><div className="pageTitle"><div className="eyebrow">{eyebrow}</div><h1>{title}</h1></div><article className="contentCard infoText">{children}</article></div>}

@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server'; import { hasSupabase, sbWrite } from '@/lib/supabase-rest';
+export async function POST(req:Request){ try{ const b=await req.json(); if(!b.gameSlug||!b.reason) return NextResponse.json({error:'Missing fields'},{status:400}); if(hasSupabase()) await sbWrite('reports','POST',{game_slug:b.gameSlug,reason:b.reason,message:b.message||'',email:b.email||'',status:'open'},'','return=minimal'); return NextResponse.json({ok:true}); }catch(e:any){ return NextResponse.json({error:e.message},{status:400}); } }

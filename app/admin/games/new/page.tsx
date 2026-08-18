@@ -1,0 +1,1 @@
+import { AdminGameForm } from '@/components/AdminGameForm'; export default function NewGame(){return <div className="pageShell"><div className="pageTitle"><div className="eyebrow">MANUAL IMPORT</div><h1>Add game</h1><p>Add a single licensed game embed manually.</p></div><AdminGameForm/></div>}

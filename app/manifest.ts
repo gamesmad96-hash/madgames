@@ -1,0 +1,1 @@
+import type {MetadataRoute} from 'next'; export default function manifest():MetadataRoute.Manifest{return{name:'MADGAMES.FUN',short_name:'MADGAMES',description:'Play free online browser games instantly.',start_url:'/',display:'standalone',background_color:'#f3f3f1',theme_color:'#090b10',icons:[]}}

@@ -1,0 +1,3 @@
+'use client';
+import { useEffect,useState } from 'react'; import type { Game } from '@/lib/types'; import { GameCard } from './GameCard';
+export function LocalGameList({storageKey,emptyText,games}:{storageKey:string;emptyText:string;games:Game[]}){ const [slugs,setSlugs]=useState<string[]>([]); useEffect(()=>{try{setSlugs(JSON.parse(localStorage.getItem(storageKey)||'[]'));}catch{setSlugs([])}},[storageKey]); const items=slugs.map(s=>games.find(g=>g.slug===s)).filter(Boolean) as Game[]; if(!items.length)return <div className="emptyState">{emptyText}</div>; return <div className="gameGrid">{items.map(g=><GameCard key={g.id} game={g}/>)}</div>; }

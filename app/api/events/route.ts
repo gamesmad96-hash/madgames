@@ -1,0 +1,3 @@
+import { NextResponse } from 'next/server'; import { hasSupabase, sbWrite } from '@/lib/supabase-rest';
+const allowed=new Set(['game_view','game_play','game_fullscreen','game_favorite','game_share','search','category_view']);
+export async function POST(req:Request){ try{ const body=await req.json(); if(!allowed.has(body.event)) return NextResponse.json({ok:false},{status:400}); if(hasSupabase()) await sbWrite('game_events','POST',{event_name:body.event,game_slug:body.gameSlug||null,metadata:body.metadata||{},created_at:new Date().toISOString()},'','return=minimal'); return NextResponse.json({ok:true}); }catch{ return NextResponse.json({ok:true}); } }
