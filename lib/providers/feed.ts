@@ -15,7 +15,7 @@ export async function loadProviderFeed(provider:string, feedUrl:string, limit=10
   if(!res.ok) throw new Error(`Provider feed failed: ${res.status}`);
   const raw=await res.text(); let rows:any[]=[];
   try{ rows=toArray(JSON.parse(raw)); }catch{ rows=parseXml(raw); }
-  return rows.slice(0,Math.min(limit,500)).map((r,i)=>{
+  return rows.slice(0,Math.min(limit,500)).map<Game>((r,i)=>{
     const title=text(first(r,['title','name','game_name'])) || `Imported Game ${i+1}`;
     const embedUrl=text(first(r,['embedUrl','embed_url','gameUrl','game_url','url','location','iframe']));
     const category=text(first(r,['category','genre'])) || 'Casual';
