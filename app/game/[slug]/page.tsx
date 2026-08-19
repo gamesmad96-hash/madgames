@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import Link from 'next/link';
 import {getGame,getGames} from '@/lib/catalog';
+import {getGuidesForCategory} from '@/lib/guides';
 import {PlayerShell} from '@/components/PlayerShell';
 import {ClientGameActions} from '@/components/ClientGameActions';
 import {GameSection} from '@/components/GameSection';
@@ -37,6 +38,7 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
   if(!game)notFound();
   const related=all.filter(g=>g.slug!==game.slug&&(g.category===game.category||g.tags?.some(t=>game.tags?.includes(t)))).slice(0,10);
   const categorySlug=game.category.toLowerCase().replaceAll(' ','-');
+  const relatedGuides=getGuidesForCategory(categorySlug,2);
   const description=gameDescription(game.title,game.category,game.description);
   const deviceAnswer=game.mobileSupported&&game.desktopSupported
     ?`${game.title} is listed as supporting both mobile and desktop browsers.`
@@ -95,6 +97,7 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
     <PlayerShell game={game}/>
     <section className="contentCard"><h2>About {game.title}</h2><p>{game.description}</p><h3>How to play {game.title}</h3><p>{game.instructions||'Press Play and follow the instructions shown inside the game.'}</p><h3>{game.title} controls</h3><div className="controlChips"><span>{game.controls||'Controls vary by game.'}</span></div><div className="gameDetails"><span>Category <b><Link href={`/category/${categorySlug}`}>{game.category}</Link></b></span><span>Provider <b>{game.provider}</b></span><span>Mobile <b>{game.mobileSupported?'Yes':'No'}</b></span><span>Desktop <b>{game.desktopSupported?'Yes':'No'}</b></span></div><p>Browse more <Link href={`/category/${categorySlug}`}>{game.category.toLowerCase()} games</Link> or use <Link href="/search">Search</Link> to find another title.</p><Link className="reportLink" href={`/report-game?game=${encodeURIComponent(game.slug)}`}>Report a problem with this game</Link></section>
     <section className="contentCard" aria-labelledby={`${game.slug}-faq`}><h2 id={`${game.slug}-faq`}>{game.title} FAQ</h2>{faqs.map(item=><div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}</section>
+    {relatedGuides.length?<section className="contentCard" aria-labelledby={`${game.slug}-guides`}><h2 id={`${game.slug}-guides`}>Helpful browser gaming guides</h2><p>These guides explain the broader play style, device or browser-game format connected to this category.</p>{relatedGuides.map(guide=><p key={guide.slug}><Link href={`/guides/${guide.slug}`}>{guide.title}</Link> — {guide.summary}</p>)}<p><Link href="/guides">Browse all gaming guides →</Link></p></section>:null}
     <GameSection title={`More ${game.category} games like ${game.title}`} items={related}/>
   </div>;
 }
