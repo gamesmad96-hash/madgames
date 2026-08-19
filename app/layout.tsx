@@ -5,17 +5,46 @@ import {Header} from '@/components/Header';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 const gaId=process.env.NEXT_PUBLIC_GA_ID||'G-HN1N7QYK77';
+const googleSiteVerification=process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingSiteVerification=process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
+const siteDescription='Play free online browser games instantly on MADGAMES.FUN. Discover action, racing, puzzle, sports and casual games with no downloads required.';
 
 export const metadata:Metadata={
   metadataBase:new URL(siteUrl),
   applicationName:'MADGAMES.FUN',
   title:{default:'MADGAMES.FUN — Play Free Online Games',template:'%s | MADGAMES.FUN'},
-  description:'Play free online browser games instantly. No downloads, no waiting.',
-  alternates:{canonical:'/'},
+  description:siteDescription,
+  keywords:['free online games','browser games','play games online','action games','racing games','puzzle games','sports games'],
   manifest:'/manifest.webmanifest',
-  robots:{index:true,follow:true},
-  openGraph:{siteName:'MADGAMES.FUN',type:'website',url:'/'},
-  twitter:{card:'summary_large_image'}
+  referrer:'origin-when-cross-origin',
+  formatDetection:{telephone:false,address:false,email:false},
+  verification:{
+    ...(googleSiteVerification?{google:googleSiteVerification}:{}),
+    ...(bingSiteVerification?{other:{'msvalidate.01':bingSiteVerification}}:{})
+  },
+  robots:{
+    index:true,
+    follow:true,
+    googleBot:{
+      index:true,
+      follow:true,
+      'max-image-preview':'large',
+      'max-snippet':-1,
+      'max-video-preview':-1
+    }
+  },
+  openGraph:{
+    siteName:'MADGAMES.FUN',
+    type:'website',
+    locale:'en_US',
+    title:'MADGAMES.FUN — Play Free Online Games',
+    description:siteDescription
+  },
+  twitter:{
+    card:'summary_large_image',
+    title:'MADGAMES.FUN — Play Free Online Games',
+    description:siteDescription
+  }
 };
 
 export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#090b10'};
@@ -26,7 +55,9 @@ export default function RootLayout({children}:{children:React.ReactNode}){
     '@type':'WebSite',
     name:'MADGAMES.FUN',
     alternateName:'Mad Games',
-    url:siteUrl
+    url:siteUrl,
+    description:siteDescription,
+    inLanguage:'en'
   };
   return <html lang="en"><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(websiteLd)}}/>

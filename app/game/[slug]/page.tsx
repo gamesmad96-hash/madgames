@@ -29,6 +29,7 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
   if(!game)notFound();
   const related=all.filter(g=>g.slug!==game.slug&&(g.category===game.category||g.tags?.some(t=>game.tags?.includes(t)))).slice(0,10);
   const categorySlug=game.category.toLowerCase().replaceAll(' ','-');
+  const gameDescription=game.seoDescription||game.description||`Play ${game.title} online free on MADGAMES.FUN.`;
   const breadcrumbLd={
     '@context':'https://schema.org',
     '@type':'BreadcrumbList',
@@ -38,8 +39,22 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
       {'@type':'ListItem',position:3,name:game.title,item:`${siteUrl}/game/${game.slug}`}
     ]
   };
+  const gameLd={
+    '@context':'https://schema.org',
+    '@type':'VideoGame',
+    name:game.title,
+    description:gameDescription,
+    url:`${siteUrl}/game/${game.slug}`,
+    ...(game.thumbnailUrl?{image:game.thumbnailUrl}:{}),
+    genre:[game.category,...(game.tags||[])].filter(Boolean),
+    gamePlatform:'Web Browser',
+    applicationCategory:'Game',
+    operatingSystem:'Any',
+    inLanguage:game.language||'en'
+  };
   return <div className="pageShell narrow">
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbLd)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(gameLd)}}/>
     <div className="breadcrumbs"><Link href="/">Home</Link><span>›</span><Link href={`/category/${categorySlug}`}>{game.category}</Link><span>›</span><span>{game.title}</span></div>
     <div className="gameTopbar"><div><h1>{game.title}</h1><p>{game.category} • {game.provider==='demo'?'Demo catalog':game.provider}</p></div><ClientGameActions slug={game.slug}/></div>
     <PlayerShell game={game}/>

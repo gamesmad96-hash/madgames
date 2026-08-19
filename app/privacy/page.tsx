@@ -1,1 +1,13 @@
-import {InfoPage} from '@/components/InfoPage'; export default function Page(){return <InfoPage eyebrow="LEGAL" title="Privacy"><p>MADGAMES.FUN may process basic technical information required to deliver the website, measure game usage, remember favorites/recent games on the device, and prevent abuse.</p><h2>Local storage</h2><p>Favorites and recently played games are stored locally in the browser unless account sync is added later.</p><h2>Analytics and advertising</h2><p>Optional analytics or advertising services should only be enabled after the applicable consent and configuration requirements are met. Provider games may have their own privacy practices.</p><p>This starter policy must be reviewed and adapted to your actual business, region, analytics, ads, and provider agreements before production launch.</p></InfoPage>}
+import type {Metadata} from 'next';
+import {InfoPage} from '@/components/InfoPage';
+
+const description='Read the MADGAMES.FUN privacy policy covering browser storage, analytics, advertising, game providers and basic technical data used to operate the site.';
+
+export const metadata:Metadata={
+  title:'Privacy Policy',
+  description,
+  alternates:{canonical:'/privacy'},
+  openGraph:{title:'Privacy Policy | MADGAMES.FUN',description,url:'/privacy'}
+};
+
+export default function Page(){return <InfoPage eyebrow="LEGAL" title="Privacy"><p>MADGAMES.FUN may process basic technical information required to deliver the website, measure game usage, remember favorites/recent games on the device, and prevent abuse.</p><h2>Local storage</h2><p>Favorites and recently played games are stored locally in the browser unless account sync is added later.</p><h2>Analytics and advertising</h2><p>Optional analytics or advertising services should only be enabled after the applicable consent and configuration requirements are met. Provider games may have their own privacy practices.</p><p>This starter policy must be reviewed and adapted to your actual business, region, analytics, ads, and provider agreements before production launch.</p></InfoPage>}
