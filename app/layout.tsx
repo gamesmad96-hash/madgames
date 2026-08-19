@@ -1,6 +1,7 @@
 import type {Metadata,Viewport} from 'next';
 import Script from 'next/script';
 import './globals.css';
+import './seo-fixes.css';
 import {Header} from '@/components/Header';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
