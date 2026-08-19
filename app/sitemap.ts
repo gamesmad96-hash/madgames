@@ -1,20 +1,47 @@
-import type { MetadataRoute } from 'next';
-import { getGames, getCategories } from '@/lib/catalog';
+import type {MetadataRoute} from 'next';
+import {getGames,getCategories} from '@/lib/catalog';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://madgames.fun';
-  const [games, cats] = await Promise.all([getGames(5000), getCategories()]);
-  const fixed: MetadataRoute.Sitemap = [
-    { url: `${base}/`, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
-    { url: `${base}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${base}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${base}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/cookies`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/copyright`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${base}/game-publishers`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+function cleanBase(value:string){return value.replace(/\/$/,'')}
+function categorySlug(value:string){return value.toLowerCase().trim().replaceAll(' ','-')}
+function validDate(value?:string|null){
+  if(!value)return undefined;
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())?undefined:date;
+}
+function latest(dates:Array<Date|undefined>){
+  const valid=dates.filter((d):d is Date=>Boolean(d));
+  if(!valid.length)return undefined;
+  return new Date(Math.max(...valid.map(d=>d.getTime())));
+}
+
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{
+  const base=cleanBase(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun');
+  const [games,cats]=await Promise.all([getGames(5000),getCategories()]);
+  const latestCatalogUpdate=latest(games.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
+
+  const fixed:MetadataRoute.Sitemap=[
+    {url:`${base}/`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:1},
+    {url:`${base}/about`,changeFrequency:'monthly',priority:.6},
+    {url:`${base}/contact`,changeFrequency:'monthly',priority:.4},
+    {url:`${base}/privacy`,changeFrequency:'yearly',priority:.3},
+    {url:`${base}/terms`,changeFrequency:'yearly',priority:.3},
+    {url:`${base}/cookies`,changeFrequency:'yearly',priority:.2},
+    {url:`${base}/copyright`,changeFrequency:'yearly',priority:.4},
+    {url:`${base}/game-publishers`,changeFrequency:'monthly',priority:.5}
   ];
-  const categories: MetadataRoute.Sitemap = cats.map(c => ({ url: `${base}/category/${c.slug}`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 }));
-  const gameUrls: MetadataRoute.Sitemap = games.map(g => ({ url: `${base}/game/${g.slug}`, lastModified: g.updatedAt ? new Date(g.updatedAt) : new Date(), changeFrequency: 'weekly', priority: 0.8 }));
-  return [...fixed, ...categories, ...gameUrls];
+
+  const categories:MetadataRoute.Sitemap=cats.map(c=>{
+    const categoryGames=games.filter(g=>categorySlug(g.category)===c.slug||(g.categories||[]).some(name=>categorySlug(name)===c.slug));
+    const lastModified=latest(categoryGames.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
+    return {url:`${base}/category/${c.slug}`,lastModified,changeFrequency:'daily' as const,priority:.75};
+  });
+
+  const gameUrls:MetadataRoute.Sitemap=games.map(g=>({
+    url:`${base}/game/${g.slug}`,
+    lastModified:validDate(g.updatedAt)||validDate(g.publishedAt),
+    changeFrequency:'weekly',
+    priority:.8
+  }));
+
+  return [...fixed,...categories,...gameUrls];
 }
