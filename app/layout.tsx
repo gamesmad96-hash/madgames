@@ -5,6 +5,8 @@ import {Header} from '@/components/Header';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 const gaId=process.env.NEXT_PUBLIC_GA_ID||'G-HN1N7QYK77';
+const googleSiteVerification=process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingSiteVerification=process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
 const siteDescription='Play free online browser games instantly on MADGAMES.FUN. Discover action, racing, puzzle, sports and casual games with no downloads required.';
 
 export const metadata:Metadata={
@@ -16,6 +18,10 @@ export const metadata:Metadata={
   manifest:'/manifest.webmanifest',
   referrer:'origin-when-cross-origin',
   formatDetection:{telephone:false,address:false,email:false},
+  verification:{
+    ...(googleSiteVerification?{google:googleSiteVerification}:{}),
+    ...(bingSiteVerification?{other:{'msvalidate.01':bingSiteVerification}}:{})
+  },
   robots:{
     index:true,
     follow:true,
