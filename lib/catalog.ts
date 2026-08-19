@@ -58,12 +58,12 @@ export async function getAllGamesForAdmin(limit = 500): Promise<Game[]> {
 }
 
 export async function getGame(slug: string): Promise<Game | undefined> {
-  if (!hasSupabase()) return seedGames.find(g => g.slug === slug);
+  if (!hasSupabase()) return seedGames.find(g => g.slug === slug && g.status === 'published');
   try {
-    const rows = await sbSelect<any[]>(`games?select=*&slug=eq.${encodeURIComponent(slug)}&limit=1`, { revalidate: 60 });
-    return rows[0] ? normalizeGame(rows[0]) : seedGames.find(g => g.slug === slug);
+    const rows = await sbSelect<any[]>(`games?select=*&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`, { revalidate: 60 });
+    return rows[0] ? normalizeGame(rows[0]) : undefined;
   } catch {
-    return seedGames.find(g => g.slug === slug);
+    return seedGames.find(g => g.slug === slug && g.status === 'published');
   }
 }
 
