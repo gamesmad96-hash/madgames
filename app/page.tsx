@@ -1,7 +1,26 @@
+import type {Metadata} from 'next';
 import Link from 'next/link';
 import {getCategories,getGames} from '@/lib/catalog';
 import {GameCard} from '@/components/GameCard';
 import {GameSection} from '@/components/GameSection';
+
+const description='Play free online games instantly on MADGAMES.FUN. Discover action, racing, puzzle, sports and casual browser games with no downloads required.';
+
+export const metadata:Metadata={
+  title:{absolute:'MADGAMES.FUN — Play Free Online Games'},
+  description,
+  alternates:{canonical:'/'},
+  openGraph:{
+    title:'MADGAMES.FUN — Play Free Online Games',
+    description,
+    url:'/'
+  },
+  twitter:{
+    card:'summary_large_image',
+    title:'MADGAMES.FUN — Play Free Online Games',
+    description
+  }
+};
 
 export default async function Home(){
   const [games,categories]=await Promise.all([getGames(160),getCategories()]);
