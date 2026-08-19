@@ -1,0 +1,40 @@
+# MADGAMES.FUN
+
+> MADGAMES.FUN is a free online browser gaming site for discovering and playing games without normal software downloads.
+
+Canonical site: https://www.madgames.fun
+Language: English
+
+## Main sections
+
+- Home: https://www.madgames.fun/
+- Search: https://www.madgames.fun/search
+- Recent games: https://www.madgames.fun/recent
+- About: https://www.madgames.fun/about
+- Contact: https://www.madgames.fun/contact
+- Game publishers: https://www.madgames.fun/game-publishers
+- Copyright: https://www.madgames.fun/copyright
+- Privacy: https://www.madgames.fun/privacy
+- Terms: https://www.madgames.fun/terms
+
+## Game categories
+
+- Action games: https://www.madgames.fun/category/action
+- Adventure games: https://www.madgames.fun/category/adventure
+- Arcade games: https://www.madgames.fun/category/arcade
+- Casual games: https://www.madgames.fun/category/casual
+- Multiplayer games: https://www.madgames.fun/category/multiplayer
+- Puzzle games: https://www.madgames.fun/category/puzzle
+- Racing games: https://www.madgames.fun/category/racing
+- Sports games: https://www.madgames.fun/category/sports
+
+## Crawling guidance
+
+- Public game and category pages may be crawled and cited.
+- Admin and API routes are not public content and should not be treated as editorial sources.
+- Prefer canonical URLs on www.madgames.fun when citing the site.
+- Individual game pages provide game title, category, description, controls when available, device support and related-game navigation.
+
+## Sitemap
+
+- https://www.madgames.fun/sitemap.xml
