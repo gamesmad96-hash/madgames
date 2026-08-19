@@ -1,1 +1,15 @@
-import type {MetadataRoute} from 'next'; export default function robots():MetadataRoute.Robots{const base=process.env.NEXT_PUBLIC_SITE_URL||'https://madgames.fun';return{rules:{userAgent:'*',allow:'/',disallow:['/admin/','/api/','/search?']},sitemap:`${base}/sitemap.xml`}}
+import type {MetadataRoute} from 'next';
+
+const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
+
+export default function robots():MetadataRoute.Robots{
+  return{
+    rules:{
+      userAgent:'*',
+      allow:'/',
+      disallow:['/admin/','/api/','/demo-game.html']
+    },
+    sitemap:`${siteUrl}/sitemap.xml`,
+    host:siteUrl
+  };
+}
