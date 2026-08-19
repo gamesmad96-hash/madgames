@@ -1,1 +1,12 @@
-import {getGames} from '@/lib/catalog'; import {LocalGameList} from '@/components/LocalGameList'; export default async function FavoritesPage(){const games=await getGames(500);return <div className="pageShell"><div className="pageTitle"><div className="eyebrow">YOUR COLLECTION</div><h1>Favorites</h1><p>Games you saved on this device.</p></div><LocalGameList games={games} storageKey="madgames:favorites" emptyText="No favorites yet. Open a game and hit Favorite."/></div>}
+import type {Metadata} from 'next';
+import {getGames} from '@/lib/catalog';
+import {LocalGameList} from '@/components/LocalGameList';
+
+export const metadata:Metadata={
+  title:'Favorite Games',
+  description:'Your locally saved favorite games on MADGAMES.FUN.',
+  alternates:{canonical:'/favorites'},
+  robots:{index:false,follow:true}
+};
+
+export default async function FavoritesPage(){const games=await getGames(500);return <div className="pageShell"><div className="pageTitle"><div className="eyebrow">YOUR COLLECTION</div><h1>Favorites</h1><p>Games you saved on this device.</p></div><LocalGameList games={games} storageKey="madgames:favorites" emptyText="No favorites yet. Open a game and hit Favorite."/></div>}
