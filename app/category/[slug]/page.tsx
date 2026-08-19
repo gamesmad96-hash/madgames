@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {getByCategory,getCategories} from '@/lib/catalog';
+import {getCategorySeoCopy} from '@/lib/seo-content';
 import {GameCard} from '@/components/GameCard';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
@@ -32,6 +33,7 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
   const [{category,games},categories]=await Promise.all([getByCategory(slug),getCategories()]);
   if(!category)notFound();
   const description=categoryDescription(category.name);
+  const editorial=getCategorySeoCopy(slug,category.name);
   const breadcrumbLd={
     '@context':'https://schema.org',
     '@type':'BreadcrumbList',
@@ -51,17 +53,37 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
     inLanguage:'en',
     numberOfItems:games.length
   };
+  const faqLd={
+    '@context':'https://schema.org',
+    '@type':'FAQPage',
+    mainEntity:editorial.faqs.map(item=>({
+      '@type':'Question',
+      name:item.question,
+      acceptedAnswer:{'@type':'Answer',text:item.answer}
+    }))
+  };
   return <div className="pageShell">
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbLd)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(collectionLd)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqLd)}}/>
+
+    <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><span>{category.name} Games</span></nav>
     <div className="pageTitle"><div className="eyebrow">FREE ONLINE {category.name.toUpperCase()} GAMES</div><h1>{category.name} Games</h1><p>{description}</p></div>
     <div className="gameGrid">{games.map((g,i)=><GameCard key={g.id} game={g} priority={i===0}/>)}</div>
 
     <section className="contentCard" aria-labelledby={`about-${slug}-games`}>
       <h2 id={`about-${slug}-games`}>About free {category.name.toLowerCase()} games</h2>
-      <p>Explore {category.name.toLowerCase()} games available through MADGAMES.FUN and open any title to view its game page, gameplay description, controls when available and device-support information. The site is designed for browser play, so normal gameplay does not require a separate game installation.</p>
+      <p>{editorial.intro}</p>
       <h3>How to choose a {category.name.toLowerCase()} game</h3>
-      <p>Start with the game cards above, use <Link href="/search">Search</Link> for a specific title or browse another category if you want a different style of game. Individual game pages also link to related titles to make discovery easier.</p>
+      <p>{editorial.choose}</p>
+      <h3>Who this category is useful for</h3>
+      <p>{editorial.playStyle}</p>
+      <p>Use <Link href="/search">Search</Link> when you already know the type of game you want, or open an individual title to see its gameplay description, controls when available, provider and mobile/desktop support.</p>
+    </section>
+
+    <section className="contentCard" aria-labelledby={`${slug}-faq`}>
+      <h2 id={`${slug}-faq`}>{category.name} games FAQ</h2>
+      {editorial.faqs.map(item=><div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}
     </section>
 
     <section className="gameSection" aria-labelledby="more-categories"><div className="sectionHead"><h2 id="more-categories">Explore more free game categories</h2></div><nav className="adminNav" aria-label="More game categories">{categories.filter(c=>c.slug!==slug).slice(0,12).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
