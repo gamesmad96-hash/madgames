@@ -18,10 +18,11 @@ export function GameCard({ game, featured = false, compact = false, priority = f
             width={480}
             height={360}
             loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
-            style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}
+            className="gameThumb"
           />
-          <span aria-hidden="true" style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.03) 60%)',pointerEvents:'none'}}/>
+          <span aria-hidden="true" className="gameThumbOverlay"/>
         </>}
         {!thumb && <div className="artGlow" />}
         {game.badge && <span className="badge">{game.badge}</span>}
