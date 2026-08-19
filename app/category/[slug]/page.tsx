@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {getByCategory,getCategories} from '@/lib/catalog';
 import {getCategorySeoCopy} from '@/lib/seo-content';
+import {getGuidesForCategory} from '@/lib/guides';
 import {GameCard} from '@/components/GameCard';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
@@ -34,6 +35,7 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
   if(!category)notFound();
   const description=categoryDescription(category.name);
   const editorial=getCategorySeoCopy(slug,category.name);
+  const relatedGuides=getGuidesForCategory(slug,2);
   const breadcrumbLd={
     '@context':'https://schema.org',
     '@type':'BreadcrumbList',
@@ -85,6 +87,13 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
       <h2 id={`${slug}-faq`}>{category.name} games FAQ</h2>
       {editorial.faqs.map(item=><div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}
     </section>
+
+    {relatedGuides.length?<section className="contentCard" aria-labelledby={`${slug}-guides`}>
+      <h2 id={`${slug}-guides`}>Guides related to {category.name.toLowerCase()} games</h2>
+      <p>Use these editorial guides when you want help comparing play styles, devices or browser-game formats before choosing a title.</p>
+      {relatedGuides.map(guide=><div key={guide.slug}><h3><Link href={`/guides/${guide.slug}`}>{guide.title}</Link></h3><p>{guide.summary}</p></div>)}
+      <p><Link href="/guides">Browse all gaming guides →</Link></p>
+    </section>:null}
 
     <section className="gameSection" aria-labelledby="more-categories"><div className="sectionHead"><h2 id="more-categories">Explore more free game categories</h2></div><nav className="adminNav" aria-label="More game categories">{categories.filter(c=>c.slug!==slug).slice(0,12).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
   </div>;
