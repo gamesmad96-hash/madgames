@@ -1,1 +1,1 @@
-.gameThumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.gameThumbOverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.03) 60%);pointer-events:none}
+.gameThumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.gameThumbOverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.03) 60%);pointer-events:none}.gameSection{content-visibility:auto;contain-intrinsic-size:520px}
