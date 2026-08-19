@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {getCategories,getGames} from '@/lib/catalog';
+import {guides} from '@/lib/guides';
 import {GameCard} from '@/components/GameCard';
 import {GameSection} from '@/components/GameSection';
 
@@ -68,6 +69,14 @@ export default async function Home(){
 
     <section className="gameSection" aria-labelledby="browse-categories"><div className="sectionHead"><h2 id="browse-categories">Browse free games by category</h2></div><nav className="adminNav" aria-label="Game categories">{categories.slice(0,18).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
 
+    <section className="contentCard" aria-labelledby="browser-gaming-guides">
+      <p className="tinyLabel">MADGAMES.FUN EDITORIAL</p>
+      <h2 id="browser-gaming-guides">Browser gaming guides</h2>
+      <p>Use our answer-first guides when you want help choosing a game type, checking mobile compatibility or understanding how browser play works before opening a title.</p>
+      {guides.slice(0,3).map(guide=><div key={guide.slug}><h3><Link href={`/guides/${guide.slug}`}>{guide.title}</Link></h3><p>{guide.summary}</p></div>)}
+      <p><Link href="/guides">Browse all gaming guides →</Link></p>
+    </section>
+
     <section className="contentCard" aria-labelledby="about-free-games">
       <p className="tinyLabel">ABOUT MADGAMES.FUN</p>
       <h2 id="about-free-games">Free browser games with no downloads</h2>
@@ -75,7 +84,7 @@ export default async function Home(){
       <p>The catalog is organized into clear topics so players and search engines can understand what each section contains. Popular areas include <Link href="/category/action">action games</Link>, <Link href="/category/racing">racing games</Link>, <Link href="/category/puzzle">puzzle games</Link> and <Link href="/category/sports">sports games</Link>, alongside adventure, arcade, casual, multiplayer and other browser-game categories.</p>
 
       <h3>Find games faster</h3>
-      <p>Use <Link href="/search">Search</Link> when you already know the type of game you want, or browse category pages when you want to discover something new. MADGAMES.FUN also includes <Link href="/recent">Recent</Link> and <Link href="/favorites">Favorites</Link> areas to make returning to games easier. Each game page includes its category, gameplay information, basic controls when available, device-support details and links to related games.</p>
+      <p>Use <Link href="/search">Search</Link> when you already know the type of game you want, browse <Link href="/guides">Gaming Guides</Link> when you want help choosing a play style, or browse category pages when you want to discover something new. MADGAMES.FUN also includes <Link href="/recent">Recent</Link> and <Link href="/favorites">Favorites</Link> areas to make returning to games easier. Each game page includes its category, gameplay information, basic controls when available, device-support details and links to related games.</p>
 
       <h3>Browser gaming on mobile and desktop</h3>
       <p>Games in the catalog can support mobile browsers, desktop browsers or both. Compatibility depends on the individual game, so the relevant game page is the best place to confirm device support. The site itself is designed to be responsive across common screen sizes, allowing the catalog and navigation to adapt between desktop, tablet and mobile layouts.</p>
