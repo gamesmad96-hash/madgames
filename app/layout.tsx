@@ -6,6 +6,7 @@ import {Header} from '@/components/Header';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 const gaId=process.env.NEXT_PUBLIC_GA_ID||'G-HN1N7QYK77';
+const googleSiteVerification=process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 const defaultTitle='Free Online Browser Games — Play Instantly | MADGAMES.FUN';
 const defaultDescription='Play free online browser games instantly on MADGAMES.FUN. Discover action, racing, puzzle, sports and more—no downloads, no installs, no waiting.';
 
@@ -17,6 +18,7 @@ export const metadata:Metadata={
   keywords:['free online games','browser games','play games online','action games','racing games','puzzle games','sports games'],
   alternates:{canonical:'/'},
   manifest:'/manifest.webmanifest',
+  verification:googleSiteVerification?{google:googleSiteVerification}:undefined,
   robots:{
     index:true,
     follow:true,
@@ -70,6 +72,6 @@ export default function RootLayout({children}:{children:React.ReactNode}){
     </>}
     <Header/>
     <main className="appMain">{children}</main>
-    <footer className="footer"><div><strong>MADGAMES.FUN</strong><p>Free online browser games with instant play and no downloads.</p></div><div className="footerLinks"><a href="/">Games</a><a href="/search">Search</a><a href="/favorites">Favorites</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/copyright">Copyright</a></div></footer>
+    <footer className="footer"><div><strong>MADGAMES.FUN</strong><p>Free online browser games with instant play and no downloads.</p></div><div className="footerLinks"><a href="/">Games</a><a href="/search">Search</a><a href="/favorites">Favorites</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/game-publishers">Publishers</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/terms">Terms</a><a href="/copyright">Copyright</a></div></footer>
   </body></html>
 }
