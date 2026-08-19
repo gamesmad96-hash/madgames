@@ -30,8 +30,8 @@ const faqs=[
 
 export default async function Home(){
   const [games,categories]=await Promise.all([getGames(160),getCategories()]);
-  const top=games.slice(0,24);
-  const by=(c:string)=>games.filter(g=>g.category===c).slice(0,10);
+  const top=games.slice(0,16);
+  const by=(c:string)=>games.filter(g=>g.category===c).slice(0,6);
   const currentYear=new Date().getFullYear();
   const faqLd={
     '@context':'https://schema.org',
@@ -59,8 +59,8 @@ export default async function Home(){
 
     <div className="homeIntro"><div><p className="tinyLabel">MADGAMES.FUN · FREE ONLINE BROWSER GAMES</p><h1>Play free online games instantly.</h1></div><Link href="/search" className="browseLink">Browse all games <span>→</span></Link></div>
 
-    <section className="discoveryGrid" aria-label="Featured free online games">{top.map((game,i)=><GameCard key={game.id} game={game} priority={i===0} featured={[0,4,9,14].includes(i)} compact={[2,3,6,7,10,11,17,18].includes(i)}/>)}</section>
-    <GameSection title="Trending now" items={games.filter(g=>g.trending).slice(0,10)}/>
+    <section className="discoveryGrid" aria-label="Featured free online games">{top.map((game,i)=><GameCard key={game.id} game={game} priority={i===0} featured={[0,4,9,14].includes(i)} compact={[2,3,6,7,10,11].includes(i)}/>)}</section>
+    <GameSection title="Trending now" items={games.filter(g=>g.trending).slice(0,6)}/>
     <GameSection title="Racing games" items={by('Racing')} href="/category/racing"/>
     <GameSection title="Action games" items={by('Action')} href="/category/action"/>
     <GameSection title="Puzzle games" items={by('Puzzle')} href="/category/puzzle"/>
