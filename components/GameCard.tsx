@@ -14,7 +14,7 @@ export function GameCard({ game, featured = false, compact = false, priority = f
         {thumb && <>
           <img
             src={thumb}
-            alt=""
+            alt={`${game.title} ${game.category} game thumbnail`}
             width={480}
             height={360}
             loading={priority ? 'eager' : 'lazy'}

@@ -1,9 +1,10 @@
 import type { Category, Game } from './types';
 import { seedCategories, seedGames } from './seed-games';
 import { hasSupabase, sbSelect } from './supabase-rest';
+import { enrichGameForSeo } from './game-enrichment';
 
 function normalizeGame(row: any): Game {
-  return {
+  return enrichGameForSeo({
     id: String(row.id),
     provider: row.provider || 'manual',
     providerGameId: row.provider_game_id ?? row.providerGameId ?? null,
@@ -34,46 +35,58 @@ function normalizeGame(row: any): Game {
     publishedAt: row.published_at ?? row.publishedAt ?? null,
     updatedAt: row.updated_at ?? row.updatedAt ?? null,
     createdAt: row.created_at ?? row.createdAt ?? null,
-  };
+  });
+}
+
+function enrichedSeed(limit: number): Game[] {
+  return seedGames.slice(0, limit).map(enrichGameForSeo);
 }
 
 export async function getGames(limit = 200): Promise<Game[]> {
-  if (!hasSupabase()) return seedGames.slice(0, limit);
+  if (!hasSupabase()) return enrichedSeed(limit);
   try {
     const rows = await sbSelect<any[]>(`games?select=*&status=eq.published&order=featured.desc,trending.desc,published_at.desc&limit=${limit}`, { revalidate: 60 });
-    return rows.length ? rows.map(normalizeGame) : seedGames.slice(0, limit);
+    return rows.length ? rows.map(normalizeGame) : enrichedSeed(limit);
   } catch {
-    return seedGames.slice(0, limit);
+    return enrichedSeed(limit);
   }
 }
 
 export async function getAllGamesForAdmin(limit = 500): Promise<Game[]> {
-  if (!hasSupabase()) return seedGames.slice(0, limit);
+  if (!hasSupabase()) return enrichedSeed(limit);
   try {
     const rows = await sbSelect<any[]>(`games?select=*&order=created_at.desc&limit=${limit}`, { admin: true, revalidate: 0 });
     return rows.map(normalizeGame);
   } catch {
-    return seedGames.slice(0, limit);
+    return enrichedSeed(limit);
   }
 }
 
 export async function getGame(slug: string): Promise<Game | undefined> {
-  if (!hasSupabase()) return seedGames.find(g => g.slug === slug && g.status === 'published');
+  if (!hasSupabase()) {
+    const game = seedGames.find(g => g.slug === slug && g.status === 'published');
+    return game ? enrichGameForSeo(game) : undefined;
+  }
   try {
     const rows = await sbSelect<any[]>(`games?select=*&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`, { revalidate: 60 });
     return rows[0] ? normalizeGame(rows[0]) : undefined;
   } catch {
-    return seedGames.find(g => g.slug === slug && g.status === 'published');
+    const game = seedGames.find(g => g.slug === slug && g.status === 'published');
+    return game ? enrichGameForSeo(game) : undefined;
   }
 }
 
 export async function getGameById(id: string): Promise<Game | undefined> {
-  if (!hasSupabase()) return seedGames.find(g => g.id === id);
+  if (!hasSupabase()) {
+    const game = seedGames.find(g => g.id === id);
+    return game ? enrichGameForSeo(game) : undefined;
+  }
   try {
     const rows = await sbSelect<any[]>(`games?select=*&id=eq.${encodeURIComponent(id)}&limit=1`, { admin: true, revalidate: 0 });
-    return rows[0] ? normalizeGame(rows[0]) : seedGames.find(g => g.id === id);
+    return rows[0] ? normalizeGame(rows[0]) : undefined;
   } catch {
-    return seedGames.find(g => g.id === id);
+    const game = seedGames.find(g => g.id === id);
+    return game ? enrichGameForSeo(game) : undefined;
   }
 }
 

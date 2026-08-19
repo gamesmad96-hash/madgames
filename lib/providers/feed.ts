@@ -1,4 +1,5 @@
 import type { Game } from '../types';
+import { enrichGameForSeo } from '../game-enrichment';
 
 function slugify(input:string){ return input.toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,120) || `game-${Date.now()}`; }
 function text(v:any){ return typeof v === 'string' ? v.trim() : ''; }
@@ -22,6 +23,37 @@ export async function loadProviderFeed(provider:string, feedUrl:string, limit=10
     const desc=text(first(r,['description','desc','game_description']));
     const thumb=text(first(r,['thumbnailUrl','thumbnail_url','thumbnail','image','thumb']));
     const providerGameId=String(first(r,['id','game_id','gameId']) ?? `${slugify(title)}-${i}`);
-    return {id:`preview-${provider}-${providerGameId}`,provider,providerGameId,title,slug:slugify(title),description:desc,seoDescription:null,instructions:null,controls:null,embedUrl,thumbnailUrl:thumb||null,screenshots:[],category,categories:[category],tags:[],mobileSupported:true,desktopSupported:true,width:Number(first(r,['width']))||null,height:Number(first(r,['height']))||null,orientation:null,language:'en',status:'pending',featured:false,trending:false,badge:'NEW',emoji:'🎮',gradient:`g${(i%24)+1}`,publishedAt:null,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+    return enrichGameForSeo({
+      id:`preview-${provider}-${providerGameId}`,
+      provider,
+      providerGameId,
+      title,
+      slug:slugify(title),
+      description:desc,
+      seoDescription:null,
+      instructions:null,
+      controls:null,
+      embedUrl,
+      thumbnailUrl:thumb||null,
+      screenshots:[],
+      category,
+      categories:[category],
+      tags:[],
+      mobileSupported:true,
+      desktopSupported:true,
+      width:Number(first(r,['width']))||null,
+      height:Number(first(r,['height']))||null,
+      orientation:null,
+      language:'en',
+      status:'pending',
+      featured:false,
+      trending:false,
+      badge:'NEW',
+      emoji:'🎮',
+      gradient:`g${(i%24)+1}`,
+      publishedAt:null,
+      createdAt:new Date().toISOString(),
+      updatedAt:new Date().toISOString()
+    });
   }).filter(g=>Boolean(g.embedUrl));
 }

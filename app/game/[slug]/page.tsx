@@ -13,12 +13,13 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   const g=await getGame(slug);
   if(!g)return{};
   const description=g.seoDescription||g.description||`Play ${g.title} online free on MADGAMES.FUN.`;
+  const seoTitle=`${g.title} — Play Free ${g.category} Game Online`;
   return{
-    title:`Play ${g.title} Online Free`,
+    title:seoTitle,
     description,
     alternates:{canonical:`/game/${g.slug}`},
-    openGraph:{title:`Play ${g.title} Online Free | MADGAMES.FUN`,description,url:`/game/${g.slug}`,images:g.thumbnailUrl?[g.thumbnailUrl]:undefined},
-    twitter:{card:'summary_large_image',title:`Play ${g.title} Online Free`,description,images:g.thumbnailUrl?[g.thumbnailUrl]:undefined}
+    openGraph:{title:`${seoTitle} | MADGAMES.FUN`,description,url:`/game/${g.slug}`,images:g.thumbnailUrl?[{url:g.thumbnailUrl,alt:`${g.title} ${g.category} game thumbnail`}]:undefined},
+    twitter:{card:'summary_large_image',title:seoTitle,description,images:g.thumbnailUrl?[g.thumbnailUrl]:undefined}
   };
 }
 

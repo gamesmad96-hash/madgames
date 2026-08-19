@@ -1,4 +1,6 @@
 import type { Game } from './types';
 import { sbWrite } from './supabase-rest';
+import { enrichGameForSeo } from './game-enrichment';
+
 export function gameToRow(g:Partial<Game>){ return {provider:g.provider||'manual',provider_game_id:g.providerGameId||null,title:g.title,slug:g.slug,description:g.description||'',seo_description:g.seoDescription||null,instructions:g.instructions||null,controls:g.controls||null,embed_url:g.embedUrl||null,thumbnail_url:g.thumbnailUrl||null,screenshots:g.screenshots||[],category:g.category||'Casual',categories:g.categories||[g.category||'Casual'],tags:g.tags||[],mobile_supported:g.mobileSupported??true,desktop_supported:g.desktopSupported??true,width:g.width||null,height:g.height||null,orientation:g.orientation||null,language:g.language||'en',status:g.status||'pending',featured:g.featured??false,trending:g.trending??false,badge:g.badge||null,emoji:g.emoji||'🎮',gradient:g.gradient||'g1',published_at:g.status==='published'?(g.publishedAt||new Date().toISOString()):null,updated_at:new Date().toISOString()}; }
-export async function upsertGames(games:Game[]){ return sbWrite<any[]>('games','POST',games.map(gameToRow),'?on_conflict=provider,provider_game_id','resolution=merge-duplicates,return=representation'); }
+export async function upsertGames(games:Game[]){ return sbWrite<any[]>('games','POST',games.map(enrichGameForSeo).map(gameToRow),'?on_conflict=provider,provider_game_id','resolution=merge-duplicates,return=representation'); }
