@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 function hash(input:string){ let h=2166136261; for(let i=0;i<input.length;i++){ h^=input.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
-function esc(value:string){ return value.replace(/[&<>"']/g,ch=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;' }[ch]||ch)); }
+function esc(value:string){ const entities:Record<string,string>={ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;' }; return value.replace(/[&<>"']/g,ch=>entities[ch]||ch); }
 function fromSlug(slug:string){ return slug.replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).trim(); }
 function wrapTitle(title:string){
   const words=title.split(/\s+/).filter(Boolean); const lines:string[]=[]; let line='';
