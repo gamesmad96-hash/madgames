@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {getCategories,getGames} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
 import {seoTopics} from '@/lib/seo-topics';
+import {robloxTrafficGuides} from '@/lib/roblox-guides';
 import {GameCard} from '@/components/GameCard';
 import {GameSection} from '@/components/GameSection';
 
@@ -69,6 +70,13 @@ export default async function Home(){
     <GameSection title="Sports games" items={by('Sports')} href="/category/sports"/>
 
     <section className="gameSection" aria-labelledby="browse-categories"><div className="sectionHead"><h2 id="browse-categories">Browse free games by category</h2><Link href="/games">All games →</Link></div><nav className="adminNav" aria-label="Game categories">{categories.slice(0,18).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
+
+    <section className="contentCard" aria-labelledby="roblox-discovery">
+      <p className="tinyLabel">ROBLOX DISCOVERY</p>
+      <h2 id="roblox-discovery">Find Roblox games, live activity and focused guides</h2>
+      <p>MADGAMES now includes a Roblox discovery hub with searchable experiences, crawlable game detail pages, live category collections and guides for common searches such as two-player, horror, obby, anime and multiplayer games. Roblox experiences launch on the official Roblox platform.</p>
+      <nav className="adminNav" aria-label="Roblox discovery and guides"><Link href="/roblox">Roblox games</Link><Link href="/roblox/guides">All Roblox guides</Link>{robloxTrafficGuides.slice(0,8).map(guide=><Link key={guide.slug} href={`/roblox/guides/${guide.slug}`}>{guide.title}</Link>)}</nav>
+    </section>
 
     <section className="contentCard" aria-labelledby="discovery-hubs">
       <p className="tinyLabel">DISCOVER THE CATALOG</p>
