@@ -27,6 +27,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     {url:`${base}/games`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:.95},
     {url:`${base}/new-games`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:.9},
     {url:`${base}/hot-games`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:.9},
+    {url:`${base}/roblox`,changeFrequency:'daily',priority:.9},
     {url:`${base}/guides`,lastModified:latestGuideUpdate,changeFrequency:'weekly',priority:.7},
     {url:`${base}/about`,changeFrequency:'monthly',priority:.6},
     {url:`${base}/contact`,changeFrequency:'monthly',priority:.4},
