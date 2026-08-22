@@ -2,6 +2,7 @@ import type {MetadataRoute} from 'next';
 import {getGames,getCategories} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
 import {seoTopics} from '@/lib/seo-topics';
+import {fetchRobloxIndex,robloxGamePath,robloxSeoCollections} from '@/lib/roblox-seo';
 
 function cleanBase(value:string){return value.replace(/\/$/,'')}
 function categorySlug(value:string){return value.toLowerCase().trim().replaceAll(' ','-')}
@@ -16,9 +17,21 @@ function latest(dates:Array<Date|undefined>){
   return new Date(Math.max(...valid.map(d=>d.getTime())));
 }
 
+async function getRobloxSitemapGames(){
+  const unique=new Map<string,{universeId:string;rootPlaceId:string;name:string}>();
+  const seeds=robloxSeoCollections.slice(0,36);
+  for(let i=0;i<seeds.length;i+=6){
+    const batch=await Promise.all(seeds.slice(i,i+6).map(item=>fetchRobloxIndex(item.query)));
+    for(const games of batch){
+      for(const game of games){if(!unique.has(game.universeId))unique.set(game.universeId,game)}
+    }
+  }
+  return [...unique.values()].slice(0,1400);
+}
+
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   const base=cleanBase(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun');
-  const [games,cats]=await Promise.all([getGames(5000),getCategories()]);
+  const [games,cats,robloxGames]=await Promise.all([getGames(5000),getCategories(),getRobloxSitemapGames()]);
   const latestCatalogUpdate=latest(games.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
   const latestGuideUpdate=latest(guides.map(guide=>validDate(guide.updatedAt)));
 
@@ -65,5 +78,17 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.8
   }));
 
-  return [...fixed,...guideUrls,...topicUrls,...categories,...gameUrls];
+  const robloxCategoryUrls:MetadataRoute.Sitemap=robloxSeoCollections.map(item=>({
+    url:`${base}/roblox/category/${item.slug}`,
+    changeFrequency:'daily' as const,
+    priority:.76
+  }));
+
+  const robloxGameUrls:MetadataRoute.Sitemap=robloxGames.map(game=>({
+    url:`${base}${robloxGamePath(game)}`,
+    changeFrequency:'daily' as const,
+    priority:.72
+  }));
+
+  return [...fixed,...robloxCategoryUrls,...robloxGameUrls,...guideUrls,...topicUrls,...categories,...gameUrls];
 }
