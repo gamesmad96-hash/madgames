@@ -3,6 +3,7 @@ import {getGames,getCategories} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
 import {seoTopics} from '@/lib/seo-topics';
 import {fetchRobloxIndex,robloxGamePath,robloxSeoCollections} from '@/lib/roblox-seo';
+import {robloxTrafficGuides} from '@/lib/roblox-guides';
 
 function cleanBase(value:string){return value.replace(/\/$/,'')}
 function categorySlug(value:string){return value.toLowerCase().trim().replaceAll(' ','-')}
@@ -41,6 +42,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     {url:`${base}/new-games`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:.9},
     {url:`${base}/hot-games`,lastModified:latestCatalogUpdate,changeFrequency:'daily',priority:.9},
     {url:`${base}/roblox`,changeFrequency:'daily',priority:.9},
+    {url:`${base}/roblox/guides`,changeFrequency:'weekly',priority:.84},
     {url:`${base}/guides`,lastModified:latestGuideUpdate,changeFrequency:'weekly',priority:.7},
     {url:`${base}/about`,changeFrequency:'monthly',priority:.6},
     {url:`${base}/contact`,changeFrequency:'monthly',priority:.4},
@@ -56,6 +58,12 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     lastModified:validDate(guide.updatedAt)||validDate(guide.publishedAt),
     changeFrequency:'monthly',
     priority:.65
+  }));
+
+  const robloxGuideUrls:MetadataRoute.Sitemap=robloxTrafficGuides.map(guide=>({
+    url:`${base}/roblox/guides/${guide.slug}`,
+    changeFrequency:'daily' as const,
+    priority:.8
   }));
 
   const topicUrls:MetadataRoute.Sitemap=seoTopics.map(topic=>({
@@ -90,5 +98,5 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.72
   }));
 
-  return [...fixed,...robloxCategoryUrls,...robloxGameUrls,...guideUrls,...topicUrls,...categories,...gameUrls];
+  return [...fixed,...robloxGuideUrls,...robloxCategoryUrls,...robloxGameUrls,...guideUrls,...topicUrls,...categories,...gameUrls];
 }
