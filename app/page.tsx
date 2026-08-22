@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {getCategories,getGames} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
+import {seoTopics} from '@/lib/seo-topics';
 import {GameCard} from '@/components/GameCard';
 import {GameSection} from '@/components/GameSection';
 
@@ -68,6 +69,13 @@ export default async function Home(){
     <GameSection title="Sports games" items={by('Sports')} href="/category/sports"/>
 
     <section className="gameSection" aria-labelledby="browse-categories"><div className="sectionHead"><h2 id="browse-categories">Browse free games by category</h2></div><nav className="adminNav" aria-label="Game categories">{categories.slice(0,18).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
+
+    <section className="contentCard" aria-labelledby="popular-searches">
+      <p className="tinyLabel">POPULAR WAYS TO PLAY</p>
+      <h2 id="popular-searches">Find games by what you want to play</h2>
+      <p>Browse focused collections for common browser-game searches. Each page uses the live catalog, links back to individual games and includes device and play-style guidance instead of being a thin keyword page.</p>
+      <nav className="adminNav" aria-label="Popular game collections">{seoTopics.map(topic=><Link key={topic.slug} href={`/play/${topic.slug}`}>{topic.h1}</Link>)}</nav>
+    </section>
 
     <section className="contentCard" aria-labelledby="browser-gaming-guides">
       <p className="tinyLabel">MADGAMES.FUN EDITORIAL</p>

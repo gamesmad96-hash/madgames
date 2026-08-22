@@ -1,6 +1,7 @@
 import type {MetadataRoute} from 'next';
 import {getGames,getCategories} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
+import {seoTopics} from '@/lib/seo-topics';
 
 function cleanBase(value:string){return value.replace(/\/$/,'')}
 function categorySlug(value:string){return value.toLowerCase().trim().replaceAll(' ','-')}
@@ -40,6 +41,13 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.65
   }));
 
+  const topicUrls:MetadataRoute.Sitemap=seoTopics.map(topic=>({
+    url:`${base}/play/${topic.slug}`,
+    lastModified:latestCatalogUpdate,
+    changeFrequency:'weekly',
+    priority:.8
+  }));
+
   const categories:MetadataRoute.Sitemap=cats.map(c=>{
     const categoryGames=games.filter(g=>categorySlug(g.category)===c.slug||(g.categories||[]).some(name=>categorySlug(name)===c.slug));
     const lastModified=latest(categoryGames.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
@@ -53,5 +61,5 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.8
   }));
 
-  return [...fixed,...guideUrls,...categories,...gameUrls];
+  return [...fixed,...guideUrls,...topicUrls,...categories,...gameUrls];
 }
