@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const nav = [
-  ['◉','Home','/'],['♨','Hot','/'],['✣','New','/'],['♞','Action','/category/action'],
+  ['◉','Home','/'],['♨','Hot','/hot-games'],['✣','New','/new-games'],['♞','Action','/category/action'],
   ['⚔','Adventure','/category/adventure'],['♙','Casual','/category/casual'],['⚄','Racing','/category/racing'],
   ['▧','Puzzle','/category/puzzle'],['✦','Sports','/category/sports'],['⌾','Recent','/recent']
 ] as const;
