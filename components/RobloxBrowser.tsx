@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 
 type RobloxGame = {
@@ -29,6 +30,9 @@ function score(game: RobloxGame) {
   const total = game.totalUpVotes + game.totalDownVotes;
   return total > 0 ? Math.round((game.totalUpVotes / total) * 100) : null;
 }
+
+function slugify(value:string){return value.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80)||'roblox-game'}
+function gamePath(game:RobloxGame){return `/roblox/game/${encodeURIComponent(game.universeId)}/${slugify(game.name)}`}
 
 export function RobloxBrowser() {
   const [query, setQuery] = useState('popular');
@@ -70,11 +74,11 @@ export function RobloxBrowser() {
     setQuery(value);
   }
 
-  return <div className="robloxBrowser">
+  return <div className="robloxBrowserLive">
     <section className="robloxHero">
       <div className="robloxEyebrow">ROBLOX ON MADGAMES</div>
       <h1>Find your next Roblox game.</h1>
-      <p>Search Roblox experiences from MADGAMES, then launch them on the official Roblox platform.</p>
+      <p>Search Roblox experiences from MADGAMES, view their own game detail pages, then launch them on the official Roblox platform.</p>
       <form className="robloxSearch" onSubmit={submit}>
         <input
           value={input}
@@ -105,15 +109,16 @@ export function RobloxBrowser() {
       {!loading && games.length > 0 && <div className="robloxGrid">
         {games.map((game) => {
           const rating = score(game);
+          const path=gamePath(game);
           return <article key={game.universeId} className="robloxCard">
-            <a href={game.robloxUrl} target="_blank" rel="noopener noreferrer" className="robloxThumbLink" aria-label={`Open ${game.name} on Roblox`}>
+            <Link href={path} className="robloxThumbLink" aria-label={`View ${game.name} details`}>
               {game.thumbnailUrl
-                ? <img src={game.thumbnailUrl} alt="" className="robloxThumb" loading="lazy" />
+                ? <img src={game.thumbnailUrl} alt={`${game.name} Roblox game`} className="robloxThumb" loading="lazy" />
                 : <div className="robloxThumb robloxThumbFallback">R</div>}
-              <span className="robloxPlayBadge">▶ Play</span>
-            </a>
+              <span className="robloxPlayBadge">View game</span>
+            </Link>
             <div className="robloxCardBody">
-              <h3 title={game.name}>{game.name}</h3>
+              <h3 title={game.name}><Link className="robloxTitleLink" href={path}>{game.name}</Link></h3>
               <div className="robloxStats">
                 <span>● {compact(game.playerCount)} playing</span>
                 {rating !== null && <span>👍 {rating}%</span>}
