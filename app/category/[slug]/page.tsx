@@ -4,6 +4,7 @@ import {notFound} from 'next/navigation';
 import {getByCategory,getCategories} from '@/lib/catalog';
 import {getCategorySeoCopy} from '@/lib/seo-content';
 import {getGuidesForCategory} from '@/lib/guides';
+import {getTopicsForCategory} from '@/lib/seo-topics';
 import {GameCard} from '@/components/GameCard';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
@@ -36,6 +37,7 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
   const description=categoryDescription(category.name);
   const editorial=getCategorySeoCopy(slug,category.name);
   const relatedGuides=getGuidesForCategory(slug,2);
+  const relatedTopics=getTopicsForCategory(category.name,6);
   const breadcrumbLd={
     '@context':'https://schema.org',
     '@type':'BreadcrumbList',
@@ -87,6 +89,8 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
       <h2 id={`${slug}-faq`}>{category.name} games FAQ</h2>
       {editorial.faqs.map(item=><div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}
     </section>
+
+    {relatedTopics.length?<section className="gameSection" aria-labelledby={`${slug}-collections`}><div className="sectionHead"><h2 id={`${slug}-collections`}>Popular {category.name.toLowerCase()} game searches</h2></div><nav className="adminNav" aria-label={`Popular ${category.name} game collections`}>{relatedTopics.map(topic=><Link key={topic.slug} href={`/play/${topic.slug}`}>{topic.h1}</Link>)}</nav></section>:null}
 
     {relatedGuides.length?<section className="contentCard" aria-labelledby={`${slug}-guides`}>
       <h2 id={`${slug}-guides`}>Guides related to {category.name.toLowerCase()} games</h2>
