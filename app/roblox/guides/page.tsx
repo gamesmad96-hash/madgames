@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import Link from 'next/link';
 import {robloxTrafficGuides} from '@/lib/roblox-guides';
 import '../roblox.css';
+import './guides.css';
 
 export const metadata:Metadata={
   title:'Roblox Game Guides & Best Games Lists',
@@ -21,7 +22,7 @@ export default function RobloxGuidesPage(){
   return <main className="robloxPage"><div className="robloxBrowser">
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(itemList)}}/>
     <nav className="robloxBreadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/roblox">Roblox</Link><span>›</span><span>Guides</span></nav>
-    <section className="robloxCollectionHero">
+    <section className="robloxCollectionHero robloxGuideHero">
       <div className="robloxEyebrow">ROBLOX TRAFFIC HUB</div>
       <h1>Roblox game guides and best-games lists</h1>
       <p>Use these intent-focused guides to find Roblox experiences by genre, group size and play style. Each guide connects live Roblox discovery results to crawlable MADGAMES game detail pages.</p>
