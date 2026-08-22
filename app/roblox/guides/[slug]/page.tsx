@@ -4,6 +4,7 @@ import {notFound} from 'next/navigation';
 import {fetchRobloxSearch,getRobloxCollection,robloxGamePath} from '@/lib/roblox-seo';
 import {getRobloxTrafficGuide,robloxTrafficGuides} from '@/lib/roblox-guides';
 import '../../roblox.css';
+import '../guides.css';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 export const revalidate=21600;
