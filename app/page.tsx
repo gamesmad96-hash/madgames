@@ -59,16 +59,23 @@ export default async function Home(){
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(collectionLd)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqLd)}}/>
 
-    <div className="homeIntro"><div><p className="tinyLabel">MADGAMES.FUN · FREE ONLINE BROWSER GAMES</p><h1>Play free online games instantly.</h1></div><Link href="/search" className="browseLink">Browse all games <span>→</span></Link></div>
+    <div className="homeIntro"><div><p className="tinyLabel">MADGAMES.FUN · FREE ONLINE BROWSER GAMES</p><h1>Play free online games instantly.</h1></div><Link href="/games" className="browseLink">Browse all games <span>→</span></Link></div>
 
     <section className="discoveryGrid" aria-label="Featured free online games">{top.map((game,i)=><GameCard key={game.id} game={game} priority={i===0} featured={[0,4,9,14].includes(i)} compact={[2,3,6,7,10,11].includes(i)}/>)}</section>
-    <GameSection title="Trending now" items={games.filter(g=>g.trending).slice(0,6)}/>
+    <GameSection title="Trending now" items={games.filter(g=>g.trending).slice(0,6)} href="/hot-games"/>
     <GameSection title="Racing games" items={by('Racing')} href="/category/racing"/>
     <GameSection title="Action games" items={by('Action')} href="/category/action"/>
     <GameSection title="Puzzle games" items={by('Puzzle')} href="/category/puzzle"/>
     <GameSection title="Sports games" items={by('Sports')} href="/category/sports"/>
 
-    <section className="gameSection" aria-labelledby="browse-categories"><div className="sectionHead"><h2 id="browse-categories">Browse free games by category</h2></div><nav className="adminNav" aria-label="Game categories">{categories.slice(0,18).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
+    <section className="gameSection" aria-labelledby="browse-categories"><div className="sectionHead"><h2 id="browse-categories">Browse free games by category</h2><Link href="/games">All games →</Link></div><nav className="adminNav" aria-label="Game categories">{categories.slice(0,18).map(c=><Link key={c.id} href={`/category/${c.slug}`}>{c.name} games</Link>)}</nav></section>
+
+    <section className="contentCard" aria-labelledby="discovery-hubs">
+      <p className="tinyLabel">DISCOVER THE CATALOG</p>
+      <h2 id="discovery-hubs">Find fresh and popular games faster</h2>
+      <p>Use the permanent discovery pages to browse the complete catalog, recently added games or titles currently marked as trending and featured.</p>
+      <nav className="adminNav" aria-label="Game discovery pages"><Link href="/games">All free games</Link><Link href="/new-games">New games</Link><Link href="/hot-games">Hot games</Link></nav>
+    </section>
 
     <section className="contentCard" aria-labelledby="popular-searches">
       <p className="tinyLabel">POPULAR WAYS TO PLAY</p>
@@ -92,7 +99,7 @@ export default async function Home(){
       <p>The catalog is organized into clear topics so players and search engines can understand what each section contains. Popular areas include <Link href="/category/action">action games</Link>, <Link href="/category/racing">racing games</Link>, <Link href="/category/puzzle">puzzle games</Link> and <Link href="/category/sports">sports games</Link>, alongside adventure, arcade, casual, multiplayer and other browser-game categories.</p>
 
       <h3>Find games faster</h3>
-      <p>Use <Link href="/search">Search</Link> when you already know the type of game you want, browse <Link href="/guides">Gaming Guides</Link> when you want help choosing a play style, or browse category pages when you want to discover something new. MADGAMES.FUN also includes <Link href="/recent">Recent</Link> and <Link href="/favorites">Favorites</Link> areas to make returning to games easier. Each game page includes its category, gameplay information, basic controls when available, device-support details and links to related games.</p>
+      <p>Use <Link href="/search">Search</Link> when you already know the type of game you want, browse <Link href="/guides">Gaming Guides</Link> when you want help choosing a play style, or browse the <Link href="/games">All Games directory</Link> when you want a complete crawlable list. MADGAMES.FUN also includes <Link href="/recent">Recent</Link> and <Link href="/favorites">Favorites</Link> areas to make returning to games easier. Each game page includes its category, gameplay information, basic controls when available, device-support details and links to related games.</p>
 
       <h3>Browser gaming on mobile and desktop</h3>
       <p>Games in the catalog can support mobile browsers, desktop browsers or both. Compatibility depends on the individual game, so the relevant game page is the best place to confirm device support. The site itself is designed to be responsive across common screen sizes, allowing the catalog and navigation to adapt between desktop, tablet and mobile layouts.</p>
