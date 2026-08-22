@@ -2,13 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RobloxBrowser } from '../../components/RobloxBrowser';
 import {fetchRobloxSearch,robloxGamePath,robloxSeoCollections} from '@/lib/roblox-seo';
+import {robloxTrafficGuides} from '@/lib/roblox-guides';
 import './roblox.css';
+import './guides/guides.css';
 
 export const revalidate=21600;
 
 export const metadata: Metadata = {
-  title: 'Roblox Games — Search, Browse Categories & Play | MADGAMES.FUN',
-  description: 'Browse live Roblox games, popular categories and individual experience pages on MADGAMES.FUN, then launch games on the official Roblox platform.',
+  title: 'Roblox Games — Search, Browse Categories & Play',
+  description: 'Browse live Roblox games, popular categories, best-games guides and individual experience pages on MADGAMES.FUN, then launch games on the official Roblox platform.',
   keywords:['Roblox games','best Roblox games','play Roblox games','Roblox obby','Roblox simulator','Roblox tycoon','Roblox horror games'],
   alternates: { canonical: '/roblox' },
 };
@@ -18,6 +20,11 @@ export default async function RobloxPage() {
   return <main className="robloxPage">
     <div className="robloxBrowser">
       <RobloxBrowser />
+      <section className="robloxSeoSection" aria-labelledby="roblox-guides-title">
+        <div className="robloxResultsHead"><div><span className="robloxKicker">ROBLOX GUIDES</span><h2 id="roblox-guides-title">Find Roblox games by what you want to play</h2></div><Link href="/roblox/guides">All 20 guides →</Link></div>
+        <p className="robloxSeoIntro">These search-intent guides combine useful selection advice with live Roblox discovery results and links to individual MADGAMES game pages.</p>
+        <div className="robloxGuideGrid robloxGuideGridCompact">{robloxTrafficGuides.slice(0,9).map(guide=><article key={guide.slug} className="robloxGuideCard"><h3><Link href={`/roblox/guides/${guide.slug}`}>{guide.title}</Link></h3><p>{guide.description}</p><Link className="robloxGuideLink" href={`/roblox/guides/${guide.slug}`}>Open guide →</Link></article>)}</div>
+      </section>
       <section className="robloxSeoSection" aria-labelledby="roblox-directory-title">
         <div className="robloxResultsHead"><div><span className="robloxKicker">CRAWLABLE DIRECTORY</span><h2 id="roblox-directory-title">Browse Roblox games on MADGAMES</h2></div></div>
         <p className="robloxSeoIntro">Open an individual game page for details, current activity and its official Roblox launch link. These server-rendered links also help search engines discover the Roblox directory beyond the live search interface.</p>
