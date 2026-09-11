@@ -59,7 +59,9 @@ export default function RootLayout({children}:{children:React.ReactNode}){
       }
     ]
   };
-  return <html lang="en"><body>
+  return <html lang="en"><head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9164731215807465" crossOrigin="anonymous"/>
+  </head><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(identityLd)}}/>
     {gaId&&<>
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="lazyOnload"/>
