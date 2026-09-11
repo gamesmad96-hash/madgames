@@ -7,6 +7,7 @@ import {Header} from '@/components/Header';
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 const gaId=process.env.NEXT_PUBLIC_GA_ID||'G-HN1N7QYK77';
 const googleSiteVerification=process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const adsensePublisherId='ca-pub-9164731215807465';
 const defaultTitle='Free Online Browser Games — Play Instantly | MADGAMES.FUN';
 const defaultDescription='Play free online browser games instantly on MADGAMES.FUN. Discover action, racing, puzzle, sports and more—no downloads, no installs, no waiting.';
 
@@ -19,6 +20,7 @@ export const metadata:Metadata={
   alternates:{canonical:'/'},
   manifest:'/manifest.webmanifest',
   verification:googleSiteVerification?{google:googleSiteVerification}:undefined,
+  other:{'google-adsense-account':adsensePublisherId},
   robots:{
     index:true,
     follow:true,
@@ -60,7 +62,8 @@ export default function RootLayout({children}:{children:React.ReactNode}){
     ]
   };
   return <html lang="en"><head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9164731215807465" crossOrigin="anonymous"/>
+    <meta name="google-adsense-account" content={adsensePublisherId}/>
+    <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`} crossOrigin="anonymous"/>
   </head><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(identityLd)}}/>
     {gaId&&<>
