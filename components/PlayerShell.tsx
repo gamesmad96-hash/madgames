@@ -67,7 +67,7 @@ export function PlayerShell({game}:{game:Game}){
     }
   }
 
-  return <div className={`${styles.stage} ${isPortrait?styles.portrait:styles.landscape}`}>
+  return <div className={`${styles.stage}${isPortrait?` ${styles.portrait}`:''}`}>
     <div className={`playerWrap ${styles.frameShell}`} ref={wrapRef}>
       {!playing?
         <button className="playerCover" onClick={play}>
