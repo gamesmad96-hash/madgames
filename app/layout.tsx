@@ -31,9 +31,10 @@ export const metadata:Metadata={
     type:'website',
     url:'/',
     title:defaultTitle,
-    description:defaultDescription
+    description:defaultDescription,
+    images:[{url:'/og-image.png',width:1200,height:630,alt:'MADGAMES.FUN — free online browser games'}]
   },
-  twitter:{card:'summary_large_image',title:defaultTitle,description:defaultDescription}
+  twitter:{card:'summary_large_image',title:defaultTitle,description:defaultDescription,images:['/og-image.png']}
 };
 
 export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#090b10'};
