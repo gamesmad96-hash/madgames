@@ -254,8 +254,164 @@ export const guides:Guide[]=[
       {name:'Racing',slug:'racing'},
       {name:'Board',slug:'board'}
     ]
+  },
+  {
+    slug:"how-to-download-and-play-roblox-games",
+    title:"How to Download and Play Roblox Games on Any Device",
+    description:"Roblox games have no separate download. Learn how to install the free Roblox app on phone, tablet, PC, Mac or console, sign in and open any Roblox game safely.",
+    summary:"Individual Roblox games are not downloaded one by one. You install the free Roblox app once, sign in, and then every Roblox experience opens inside it.",
+    publishedAt:"2026-11-09",
+    updatedAt:"2026-11-09",
+    sections:[
+      {
+        heading:"Why there is no separate download for each Roblox game",
+        paragraphs:[
+          "Every Roblox game, such as a driving roleplay or an obby, is an experience that runs inside the Roblox platform. Searching for a download of one specific game usually leads to unofficial files, which are unnecessary and can be unsafe.",
+          "The safe way to play any Roblox game is to install the official Roblox app once. After that, you can open any experience from the official Roblox website, the app itself or a game's official play link."
+        ]
+      },
+      {
+        heading:"Install Roblox on your device",
+        paragraphs:[
+          "Roblox is free to install. Use the official store for your device so you always get the genuine app and automatic updates."
+        ],
+        bullets:[
+          "Android phones and tablets: install Roblox from the Google Play Store.",
+          "iPhone and iPad: install Roblox from the Apple App Store.",
+          "Windows PC or Mac: open the official Roblox website, choose a game and press Play. The site prompts you to install the Roblox app if it is not already installed.",
+          "Consoles: Roblox is available from the official store on supported Xbox and PlayStation consoles.",
+          "Chromebooks: on models that support Android apps, install Roblox from the Google Play Store."
+        ]
+      },
+      {
+        heading:"Sign in and open a game",
+        paragraphs:[
+          "Create a free Roblox account or sign in with your existing one. Then search for the game by name inside the app, or use the official play link shown on a MADGAMES.FUN Roblox game page. The link opens the game's official Roblox page, where the Play button launches it in the app.",
+          "Popular games can have similar-looking copies. Before playing, check that the creator name and visit count match the game you were looking for."
+        ]
+      },
+      {
+        heading:"Stay safe while playing",
+        paragraphs:[
+          "Only enter your Roblox password on the official Roblox app or website. No real game, code or giveaway needs your password, and sites that promise free Robux in exchange for logging in are scams.",
+          "Parents can use Roblox's built-in parental controls and account settings to manage chat, spending and content options for younger players."
+        ]
+      }
+    ],
+    faqs:[
+      {question:"Can I download a single Roblox game?",answer:"No. Roblox games run inside the Roblox app. Install the free Roblox app once and you can open any Roblox game from it."},
+      {question:"Is Roblox free to download?",answer:"Yes. The Roblox app is free on supported phones, tablets, computers and consoles. Some games offer optional in-game purchases."},
+      {question:"Can I play Roblox games without installing anything?",answer:"Roblox games are designed to run in the Roblox app, so on most devices you need to install it first. Browser games on MADGAMES.FUN are different and run directly in your browser."}
+    ],
+    relatedCategories:[
+      {name:"Adventure",slug:"adventure"},
+      {name:"Multiplayer",slug:"multiplayer"},
+      {name:"Racing",slug:"racing"},
+      {name:"Casual",slug:"casual"}
+    ]
+  },
+  {
+    slug:"how-to-find-and-redeem-roblox-game-codes",
+    title:"How to Find and Redeem Roblox Game Codes",
+    description:"Learn where Roblox game creators post codes, how to redeem them inside a game, how they differ from Roblox promo codes and gift cards, and how to avoid code scams.",
+    summary:"Most Roblox game codes are posted by each game's creator and redeemed inside that game. Roblox promo codes and gift cards are different and are redeemed on Roblox's official website.",
+    publishedAt:"2026-11-09",
+    updatedAt:"2026-11-09",
+    sections:[
+      {
+        heading:"Game codes and Roblox codes are not the same thing",
+        paragraphs:[
+          "Game codes are created by the developer of a specific Roblox game. They give rewards that only work in that game, such as in-game currency, boosts or items, and are usually limited in time.",
+          "Roblox gift cards and Roblox promo codes come from Roblox itself. They are redeemed on the official Roblox website, not inside an individual game, and are never shared through unofficial generator tools."
+        ]
+      },
+      {
+        heading:"Where to find codes for a Roblox game",
+        paragraphs:[
+          "Creators decide whether a game has codes at all, so many games have none. When codes exist, they are usually announced in places controlled by the creator."
+        ],
+        bullets:[
+          "The game's description on its official Roblox page.",
+          "The creator's Roblox group page and its announcements.",
+          "The game's official social channels or community server, if the description links to them.",
+          "Update notes or messages shown inside the game itself."
+        ]
+      },
+      {
+        heading:"How to redeem a code inside a game",
+        paragraphs:[
+          "Open the game in Roblox and look for a button labelled Codes, Redeem or a similar icon, often in the shop, settings or side menu. Type the code exactly as it was posted, because many games treat upper and lower case letters differently, then confirm.",
+          "If a code does not work, it may have expired, been typed incorrectly or require a certain level. Check the creator's latest announcement for current codes."
+        ]
+      },
+      {
+        heading:"How to spot a code scam",
+        paragraphs:[
+          "Real codes never ask for your Roblox password, a download or a survey. Be careful with sites or videos that promise free Robux, unlimited codes or code generators, because these are common scams designed to steal accounts."
+        ]
+      }
+    ],
+    faqs:[
+      {question:"Does every Roblox game have codes?",answer:"No. Codes are optional and up to each game's creator, so many games never release any."},
+      {question:"Why is my Roblox game code not working?",answer:"The code may have expired, been typed with the wrong capital letters, or need a certain level. Check the creator's latest announcement for codes that are still active."},
+      {question:"Where do I redeem a Roblox gift card?",answer:"Gift cards are redeemed on the official Roblox website's redeem page while signed in to your account, not inside a game."}
+    ],
+    relatedCategories:[
+      {name:"Adventure",slug:"adventure"},
+      {name:"Action",slug:"action"},
+      {name:"Multiplayer",slug:"multiplayer"},
+      {name:"Arcade",slug:"arcade"}
+    ]
+  },
+  {
+    slug:"how-to-find-good-roblox-games",
+    title:"How to Find Good Roblox Games Worth Playing",
+    description:"A practical guide to finding active, well-made Roblox games using player counts, visits, update dates, creators and play style, plus how to avoid copies.",
+    summary:"Good Roblox games usually combine steady player activity, recent updates and a clear play style. Comparing a few simple signals helps you skip copies and inactive games.",
+    publishedAt:"2026-11-09",
+    updatedAt:"2026-11-09",
+    sections:[
+      {
+        heading:"Start with the play style you want",
+        paragraphs:[
+          "Roblox covers almost every genre: obbies, roleplay, racing, tycoons, simulators, horror and more. Decide what kind of session you want first, then browse that genre instead of scrolling the whole platform.",
+          "The Roblox collections on MADGAMES.FUN group games by play style, so you can compare several active games of one type side by side."
+        ]
+      },
+      {
+        heading:"Check activity and visits",
+        paragraphs:[
+          "Current players show whether people are playing right now, while total visits show how popular a game has been over time. A game with steady activity is more likely to have full servers and an active community.",
+          "A sudden spike can come from a short trend, so compare activity on a few different days if you want something that lasts."
+        ]
+      },
+      {
+        heading:"Look at updates and the creator",
+        paragraphs:[
+          "A recent update date suggests the creator is still fixing bugs and adding content. The creator name also matters: popular games often have copies, so check that the creator matches the game you heard about."
+        ]
+      },
+      {
+        heading:"Use game pages before you launch",
+        paragraphs:[
+          "Each Roblox game page on MADGAMES.FUN shows the creator, live players, visits, favorites and update date, along with similar games. Use these details to choose quickly, then open the official Roblox play link."
+        ]
+      }
+    ],
+    faqs:[
+      {question:"How can I tell if a Roblox game is a copy?",answer:"Compare the creator name, visit count and favorites with the game you were looking for. Copies usually have far fewer visits and a different creator."},
+      {question:"What makes a Roblox game worth playing?",answer:"Steady player activity, recent updates and a play style you enjoy are the most useful signs."},
+      {question:"Where can I compare Roblox games?",answer:"Use the Roblox section on MADGAMES.FUN to browse collections and open game pages with live activity and the official play link."}
+    ],
+    relatedCategories:[
+      {name:"Adventure",slug:"adventure"},
+      {name:"Multiplayer",slug:"multiplayer"},
+      {name:"Action",slug:"action"},
+      {name:"Racing",slug:"racing"}
+    ]
   }
 ];
+
 
 export function getGuide(slug:string){return guides.find(g=>g.slug===slug)}
 
