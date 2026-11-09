@@ -12,6 +12,7 @@ const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').rep
 
 function gameDescription(title:string,category:string,base?:string|null){
   const first=(base||'').trim();
+  if(first.length>=70&&first.length<=160&&!/MADGAMES\.FUN/i.test(first))return first;
   const suffix=` Play ${title} free online on MADGAMES.FUN in your browser. View gameplay details, controls and device support for this ${category.toLowerCase()} game.`;
   const combined=`${first}${suffix}`.trim();
   return combined.length>160?`${combined.slice(0,157).trimEnd()}...`:combined;
