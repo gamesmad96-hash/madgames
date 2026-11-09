@@ -18,6 +18,9 @@ function latest(dates:Array<Date|undefined>){
   return new Date(Math.max(...valid.map(d=>d.getTime())));
 }
 
+// Regenerate hourly at runtime so Roblox game URLs are included even if the build-time fetch returns nothing.
+export const revalidate=3600;
+
 async function getRobloxSitemapGames(){
   const unique=new Map<string,{universeId:string;rootPlaceId:string;name:string}>();
   const seeds=robloxSeoCollections.slice(0,36);
