@@ -75,6 +75,12 @@ export default async function CategoryPage({params}:{params:Promise<{slug:string
     <div className="pageTitle"><div className="eyebrow">FREE ONLINE {category.name.toUpperCase()} GAMES</div><h1>{category.name} Games</h1><p>{description}</p></div>
     <div className="gameGrid">{games.map((g,i)=><GameCard key={g.id} game={g} priority={i===0}/>)}</div>
 
+    {(()=>{const picks=games.filter(g=>g.seoDescription&&!/MADGAMES\.FUN/i.test(g.seoDescription)).slice(0,8);return picks.length?<section className="contentCard" aria-labelledby={`${slug}-top-picks`}>
+      <h2 id={`${slug}-top-picks`}>Top {category.name.toLowerCase()} games to try</h2>
+      <p>Not sure where to start? These {category.name.toLowerCase()} games are a good first pick. Open any title to see how to play it and which devices it supports.</p>
+      <ol>{picks.map(g=><li key={g.id}><Link href={`/game/${g.slug}`}><strong>{g.title}</strong></Link> — {g.seoDescription}</li>)}</ol>
+    </section>:null})()}
+
     <section className="contentCard" aria-labelledby={`about-${slug}-games`}>
       <h2 id={`about-${slug}-games`}>About free {category.name.toLowerCase()} games</h2>
       <p>{editorial.intro}</p>
