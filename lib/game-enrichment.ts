@@ -102,8 +102,11 @@ function buildDescription(title: string, category: string, original: string, key
   ];
   const suffix = suffixes[hash(key) % suffixes.length];
 
+  // Long, hand-written descriptions are kept in full with no template text added.
+  if (source.length >= 300) return source;
+
   if (source.length >= 55) {
-    const first = ensureSentence(trimAtWord(source, 260));
+    const first = ensureSentence(source);
     return `${first} ${suffix}`.trim();
   }
 
@@ -124,6 +127,13 @@ function buildSeoDescription(title: string, category: string, key: string): stri
     `Start ${title} online for free on MADGAMES.FUN. Enjoy instant ${category.toLowerCase()} browser gameplay on supported devices.`
   ];
   return trimAtWord(variants[hash(`${key}-seo`) % variants.length], 158);
+}
+
+// A custom SEO description (written by hand, not an auto-generated template) is kept as-is.
+function customSeoDescription(value: unknown): string | null {
+  const text = cleanText(value);
+  if (text.length < 70 || /MADGAMES\.FUN/i.test(text)) return null;
+  return trimAtWord(text, 160);
 }
 
 function safeThumbnail(value: unknown): string | null {
@@ -170,7 +180,7 @@ export function enrichGameForSeo(game: Game): Game {
     category,
     categories: categories.length ? categories : [category],
     description,
-    seoDescription: buildSeoDescription(title, category, key),
+    seoDescription: customSeoDescription(game.seoDescription) || buildSeoDescription(title, category, key),
     thumbnailUrl,
     tags
   };
