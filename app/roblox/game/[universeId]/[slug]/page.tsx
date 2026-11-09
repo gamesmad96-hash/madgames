@@ -12,8 +12,8 @@ function compact(value:number){return new Intl.NumberFormat('en',{notation:'comp
 function dateLabel(value:string|null){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:new Intl.DateTimeFormat('en',{year:'numeric',month:'short',day:'numeric'}).format(d)}
 function metaDescription(name:string,base:string){
   const clean=base.replace(/\s+/g,' ').trim();
-  const lead=clean?`${clean} `:'';
-  const text=`${lead}View ${name} Roblox game details, live player activity and the official Roblox play link on MADGAMES.FUN.`;
+  const lead=`How to play ${name} on Roblox, download info, where to find codes, live players and the official play link.`;
+  const text=clean?`${lead} ${clean}`:lead;
   return text.length>160?`${text.slice(0,157).trimEnd()}...`:text;
 }
 function relatedQuery(name:string,genre:string){
@@ -28,7 +28,7 @@ export async function generateMetadata({params}:{params:Promise<{universeId:stri
   if(!game)return{};
   const slug=robloxSlug(game.name);
   const description=metaDescription(game.name,game.description);
-  const title=`${game.name} Roblox — Game Details & Play Link`;
+  const title=`${game.name} Roblox — How to Play, Download & Codes Info`;
   return{
     title,
     description,
@@ -72,7 +72,9 @@ export default async function RobloxGamePage({params}:{params:Promise<{universeI
   const faqs=[
     {q:`Where can I play ${game.name}?`,a:`Use the official Roblox play link on this page. The experience runs on Roblox; MADGAMES does not host or copy the Roblox game files.`},
     {q:`Is ${game.name} active right now?`,a:`The player count shown on this page comes from Roblox data and can change throughout the day.`},
-    {q:`Who made ${game.name}?`,a:`Roblox lists ${game.creatorName} as the creator of this experience.`}
+    {q:`Who made ${game.name}?`,a:`Roblox lists ${game.creatorName} as the creator of this experience.`},
+    {q:`How do I download ${game.name}?`,a:`${game.name} has no separate download. It is a Roblox experience, so install the free Roblox app on your phone, tablet, computer or console, sign in, and open ${game.name} from the official play link on this page.`},
+    {q:`Does ${game.name} have codes?`,a:`If the creator releases codes, they are usually announced in the game description on Roblox, in the creator's Roblox group or on their social channels. MADGAMES does not publish codes, so check the official Roblox page for the latest ones.`}
   ];
   const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faqs.map(item=>({'@type':'Question',name:item.q,acceptedAnswer:{'@type':'Answer',text:item.a}}))};
   return <main className="robloxPage"><div className="robloxBrowser">
