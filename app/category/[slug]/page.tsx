@@ -25,8 +25,8 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
     description,
     keywords:[`free ${category.name.toLowerCase()} games`,`${category.name.toLowerCase()} games online`,'browser games','free online games'],
     alternates:{canonical:`/category/${slug}`},
-    openGraph:{title:`${seoTitle} | MADGAMES.FUN`,description,url:`/category/${slug}`},
-    twitter:{card:'summary_large_image',title:seoTitle,description}
+    openGraph:{title:`${seoTitle} | MADGAMES.FUN`,description,url:`/category/${slug}`,images:[{url:'/og-image.png',width:1200,height:630,alt:`Free ${category.name} games on MADGAMES.FUN`}]},
+    twitter:{card:'summary_large_image',title:seoTitle,description,images:['/og-image.png']}
   };
 }
 
