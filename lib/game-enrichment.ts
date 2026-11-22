@@ -7,6 +7,34 @@ const CANONICAL_CATEGORIES = [
 
 type CanonicalCategory = typeof CANONICAL_CATEGORIES[number];
 
+// Hand-checked fixes for games whose provider category does not match the gameplay.
+const CATEGORY_OVERRIDES: Record<string, CanonicalCategory> = {
+  'head-punch-game': 'Action',
+  'monster-chef': 'Casual',
+  'pastry-evolution-game': 'Casual',
+  'stickman-restaurant-rush-game': 'Casual',
+  'fall-boys-coloring-book': 'Casual',
+  'tiger-coloring-book': 'Casual',
+  'pixel-car-memory-quest': 'Puzzle',
+  'car-parking-game-parking-jam': 'Puzzle',
+  'wolfoo-maze-adventure': 'Puzzle',
+  'money-rush-game': 'Arcade',
+  'oil-tanker-simulator': 'Racing',
+  '3d-police-car-parking': 'Racing',
+  'us-army-truck-driving': 'Racing',
+  'police-car-chace': 'Racing',
+  'offroad-mud-truck': 'Racing',
+  'police-bus-driving': 'Racing',
+  'offroad-jeep-simulation': 'Racing',
+  'tuk-tuk-auto-rikshaw': 'Racing',
+  'mud-truck-driving': 'Racing',
+  'ramp-car-game': 'Racing',
+  'offroad-truck-driving-game': 'Racing',
+  'police-transport-game': 'Racing',
+  'taxi-parking-driving': 'Racing',
+  'oil-tanker-game': 'Racing'
+};
+
 const categoryAliases: Record<string, CanonicalCategory> = {
   action: 'Action', adventure: 'Adventure', arcade: 'Arcade', board: 'Board', casual: 'Casual',
   girls: 'Girls', girl: 'Girls', multiplayer: 'Multiplayer', puzzle: 'Puzzle', racing: 'Racing',
@@ -90,43 +118,41 @@ function trimAtWord(value: string, max: number): string {
   return `${cut.slice(0, lastSpace > max * 0.65 ? lastSpace : cut.length).trim()}…`;
 }
 
-function buildDescription(title: string, category: string, original: string, key: string): string {
-  const source = cleanText(original);
-  const suffixes = [
-    `Play ${title} instantly in your browser on MADGAMES.FUN.`,
-    `${title} is available to play free online on desktop and supported mobile devices.`,
-    `Jump into ${title} online with quick browser play and no download required.`,
-    `Start ${title} free on MADGAMES.FUN whenever you want a quick ${category.toLowerCase()} game.`,
-    `Enjoy ${title} as a free ${category.toLowerCase()} browser game on MADGAMES.FUN.`,
-    `Launch ${title} online and get straight into this ${category.toLowerCase()} game from your browser.`
-  ];
-  const suffix = suffixes[hash(key) % suffixes.length];
+// Strip site boilerplate that older imports or templates appended to a game's own text.
+const BOILERPLATE = [
+  /\s*Play [^.]{1,90} instantly in your browser on MADGAMES\.FUN\.?$/i,
+  /\s*[^.]{1,90} is available to play free online on desktop and supported mobile devices\.?$/i,
+  /\s*Jump into [^.]{1,90} online with quick browser play and no download required\.?$/i,
+  /\s*Start [^.]{1,90} free on MADGAMES\.FUN whenever you want a quick [^.]{1,40} game\.?$/i,
+  /\s*Enjoy [^.]{1,90} as a free [^.]{1,40} browser game on MADGAMES\.FUN\.?$/i,
+  /\s*Launch [^.]{1,90} online and get straight into this [^.]{1,40} game from your browser\.?$/i
+];
 
-  // Long, hand-written descriptions are kept in full with no template text added.
-  if (source.length >= 300) return source;
-
-  if (source.length >= 55) {
-    const first = ensureSentence(source);
-    return `${first} ${suffix}`.trim();
-  }
-
-  const fallbacks = [
-    `${title} is a free ${category.toLowerCase()} browser game you can start instantly. ${suffix}`,
-    `Play ${title}, a quick ${category.toLowerCase()} game built for easy browser play. ${suffix}`,
-    `${title} brings simple online ${category.toLowerCase()} gameplay to your browser. ${suffix}`,
-    `Looking for a quick ${category.toLowerCase()} game? ${title} is ready to play online. ${suffix}`
-  ];
-  return fallbacks[hash(`${key}-fallback`) % fallbacks.length];
+function stripBoilerplate(text: string): string {
+  let out = text;
+  for (const re of BOILERPLATE) out = out.replace(re, '');
+  return out.trim();
 }
 
-function buildSeoDescription(title: string, category: string, key: string): string {
-  const variants = [
-    `Play ${title} online free on MADGAMES.FUN. Start this ${category.toLowerCase()} browser game instantly on desktop or mobile.`,
-    `${title} is free to play online on MADGAMES.FUN. Launch this ${category.toLowerCase()} game instantly in your browser.`,
-    `Play ${title} free in your browser on MADGAMES.FUN — a quick ${category.toLowerCase()} game with no download required.`,
-    `Start ${title} online for free on MADGAMES.FUN. Enjoy instant ${category.toLowerCase()} browser gameplay on supported devices.`
-  ];
-  return trimAtWord(variants[hash(`${key}-seo`) % variants.length], 158);
+function buildDescription(title: string, category: string, original: string): string {
+  const source = stripBoilerplate(cleanText(original));
+  // The game's own description is shown as written; no template sentences are added.
+  if (source.length >= 55) return ensureSentence(source);
+  return source
+    ? `${ensureSentence(source)} It is a ${category.toLowerCase()} game that runs in your web browser.`
+    : `${title} is a ${category.toLowerCase()} game that runs in your web browser.`;
+}
+
+// Meta description built from the game's own text (first sentences up to ~158 chars), not a shared template.
+function buildSeoDescription(title: string, description: string): string {
+  const sentences = description.match(/[^.!?]+[.!?]+/g) || [description];
+  let out = '';
+  for (const sentence of sentences) {
+    const next = `${out} ${sentence.trim()}`.trim();
+    if (next.length > 158) break;
+    out = next;
+  }
+  return out.length >= 70 ? out : trimAtWord(description || title, 158);
 }
 
 // A custom SEO description (written by hand, not an auto-generated template) is kept as-is.
@@ -166,11 +192,11 @@ function uniqueStrings(values: Array<string | null | undefined>): string[] {
 export function enrichGameForSeo(game: Game): Game {
   const slug = cleanText(game.slug) || `game-${hash(`${game.provider}-${game.providerGameId || game.id}`)}`;
   const title = cleanTitle(game.title, slug);
-  const category = inferGameCategory(title, game.description || '', game.category || game.categories?.[0] || '');
-  const key = `${game.provider || 'game'}:${game.providerGameId || game.id || slug}:${slug}`;
-  const description = buildDescription(title, category, game.description || '', key);
+  const override = CATEGORY_OVERRIDES[slug];
+  const category = override || inferGameCategory(title, game.description || '', game.category || game.categories?.[0] || '');
+  const description = buildDescription(title, category, game.description || '');
   const thumbnailUrl = safeThumbnail(game.thumbnailUrl) || fallbackThumbnail(slug, title, category);
-  const categories = uniqueStrings([category, ...(game.categories || [])]).filter(v => Boolean(canonicalCategory(v)));
+  const categories = override ? [override] : uniqueStrings([category, ...(game.categories || [])]).filter(v => Boolean(canonicalCategory(v)));
   const tags = uniqueStrings([...(game.tags || []), category.toLowerCase(), 'browser-game', 'free-online-game']);
 
   return {
@@ -180,7 +206,7 @@ export function enrichGameForSeo(game: Game): Game {
     category,
     categories: categories.length ? categories : [category],
     description,
-    seoDescription: customSeoDescription(game.seoDescription) || buildSeoDescription(title, category, key),
+    seoDescription: customSeoDescription(game.seoDescription) || buildSeoDescription(title, description),
     thumbnailUrl,
     tags
   };

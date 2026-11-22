@@ -10,19 +10,18 @@ import {GameSection} from '@/components/GameSection';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 
-function gameDescription(title:string,category:string,base?:string|null){
-  const first=(base||'').trim();
-  if(first.length>=70&&first.length<=160&&!/MADGAMES\.FUN/i.test(first))return first;
-  const suffix=` Play ${title} free online on MADGAMES.FUN in your browser. View gameplay details, controls and device support for this ${category.toLowerCase()} game.`;
-  const combined=`${first}${suffix}`.trim();
-  return combined.length>160?`${combined.slice(0,157).trimEnd()}...`:combined;
+function gameDescription(title:string,base?:string|null){
+  const text=(base||'').trim();
+  if(text.length<=160)return text||`${title} browser game.`;
+  const cut=text.slice(0,157);
+  return `${cut.slice(0,Math.max(cut.lastIndexOf(' '),100)).trimEnd()}...`;
 }
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const {slug}=await params;
   const g=await getGame(slug);
   if(!g)return{};
-  const description=gameDescription(g.title,g.category,g.seoDescription||g.description);
+  const description=gameDescription(g.title,g.seoDescription||g.description);
   const seoTitle=`${g.title} — Free ${g.category} Game Online`;
   return{
     title:seoTitle,
@@ -42,19 +41,7 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
   const categorySlug=game.category.toLowerCase().replaceAll(' ','-');
   const relatedGuides=getGuidesForCategory(categorySlug,2);
   const relatedTopics=getTopicsForCategory(game.category,5);
-  const description=gameDescription(game.title,game.category,game.description);
-  const deviceAnswer=game.mobileSupported&&game.desktopSupported
-    ?`${game.title} is listed as supporting both mobile and desktop browsers.`
-    :game.mobileSupported
-      ?`${game.title} is listed as supporting mobile browsers. Desktop support is not currently marked for this title.`
-      :game.desktopSupported
-        ?`${game.title} is listed as supporting desktop browsers. Mobile support is not currently marked for this title.`
-        :`Device support is not currently confirmed for ${game.title}.`;
-  const faqs=[
-    {question:`Is ${game.title} free to play?`,answer:`MADGAMES.FUN lists ${game.title} for free browser play. Third-party provider terms or in-game options can vary by title.`},
-    {question:`Do I need to download ${game.title}?`,answer:`Normal play is intended to run in the browser, so a separate game installation is not normally required when ${game.title} supports your device.`},
-    {question:`Can I play ${game.title} on mobile or desktop?`,answer:deviceAnswer}
-  ];
+  const description=gameDescription(game.title,game.seoDescription||game.description);
   const breadcrumbLd={
     '@context':'https://schema.org',
     '@type':'BreadcrumbList',
@@ -82,24 +69,13 @@ export default async function GamePage({params}:{params:Promise<{slug:string}>})
     isPartOf:{'@id':`${siteUrl}/#website`},
     publisher:{'@id':`${siteUrl}/#organization`}
   };
-  const faqLd={
-    '@context':'https://schema.org',
-    '@type':'FAQPage',
-    mainEntity:faqs.map(item=>({
-      '@type':'Question',
-      name:item.question,
-      acceptedAnswer:{'@type':'Answer',text:item.answer}
-    }))
-  };
   return <div className="pageShell narrow">
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbLd)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(gameLd)}}/>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqLd)}}/>
     <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href={`/category/${categorySlug}`}>{game.category}</Link><span>›</span><span>{game.title}</span></nav>
     <div className="gameTopbar"><div><p className="tinyLabel">FREE ONLINE {game.category.toUpperCase()} GAME</p><h1>{game.title}</h1><p>{game.category} • {game.provider==='demo'?'Demo catalog':game.provider}</p></div><ClientGameActions slug={game.slug}/></div>
     <PlayerShell game={game}/>
     <section className="contentCard"><h2>About {game.title}</h2><p>{game.description}</p><h3>How to play {game.title}</h3><p>{game.instructions||'Press Play and follow the instructions shown inside the game.'}</p>{game.controls?<><h3>{game.title} controls</h3><div className="controlChips"><span>{game.controls}</span></div></>:null}<div className="gameDetails"><span>Category <b><Link href={`/category/${categorySlug}`}>{game.category}</Link></b></span><span>Provider <b>{game.provider}</b></span><span>Mobile <b>{game.mobileSupported?'Yes':'No'}</b></span><span>Desktop <b>{game.desktopSupported?'Yes':'No'}</b></span></div><p>Browse more <Link href={`/category/${categorySlug}`}>{game.category.toLowerCase()} games</Link> or use <Link href="/search">Search</Link> to find another title.</p><Link className="reportLink" href={`/report-game?game=${encodeURIComponent(game.slug)}`}>Report a problem with this game</Link></section>
-    <section className="contentCard" aria-labelledby={`${game.slug}-faq`}><h2 id={`${game.slug}-faq`}>{game.title} FAQ</h2>{faqs.map(item=><div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}</section>
     {relatedTopics.length?<section className="gameSection" aria-labelledby={`${game.slug}-collections`}><div className="sectionHead"><h2 id={`${game.slug}-collections`}>Find more games like {game.title}</h2></div><nav className="adminNav" aria-label={`Game collections related to ${game.title}`}>{relatedTopics.map(topic=><Link key={topic.slug} href={`/play/${topic.slug}`}>{topic.h1}</Link>)}</nav></section>:null}
     {relatedGuides.length?<section className="contentCard" aria-labelledby={`${game.slug}-guides`}><h2 id={`${game.slug}-guides`}>Helpful browser gaming guides</h2><p>These guides explain the broader play style, device or browser-game format connected to this category.</p>{relatedGuides.map(guide=><p key={guide.slug}><Link href={`/guides/${guide.slug}`}>{guide.title}</Link> — {guide.summary}</p>)}<p><Link href="/guides">Browse all gaming guides →</Link></p></section>:null}
     <GameSection title={`More ${game.category} games like ${game.title}`} items={related}/>
