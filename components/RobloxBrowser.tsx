@@ -111,14 +111,14 @@ export function RobloxBrowser() {
           const rating = score(game);
           const path=gamePath(game);
           return <article key={game.universeId} className="robloxCard">
-            <Link href={path} className="robloxThumbLink" aria-label={`View ${game.name} details`}>
+            <Link href={path} rel="nofollow" className="robloxThumbLink" aria-label={`View ${game.name} details`}>
               {game.thumbnailUrl
                 ? <img src={game.thumbnailUrl} alt={`${game.name} Roblox game`} className="robloxThumb" loading="lazy" />
                 : <div className="robloxThumb robloxThumbFallback">R</div>}
               <span className="robloxPlayBadge">View game</span>
             </Link>
             <div className="robloxCardBody">
-              <h3 title={game.name}><Link className="robloxTitleLink" href={path}>{game.name}</Link></h3>
+              <h3 title={game.name}><Link className="robloxTitleLink" rel="nofollow" href={path}>{game.name}</Link></h3>
               <div className="robloxStats">
                 <span>● {compact(game.playerCount)} playing</span>
                 {rating !== null && <span>👍 {rating}%</span>}

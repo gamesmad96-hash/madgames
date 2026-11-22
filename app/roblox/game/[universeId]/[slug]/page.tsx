@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {fetchRobloxGame,fetchRobloxSearch,robloxGamePath,robloxSeoCollections,robloxSlug} from '@/lib/roblox-seo';
+import {fetchRobloxGame,robloxSeoCollections,robloxSlug} from '@/lib/roblox-seo';
 import '../../../roblox.css';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
@@ -15,11 +15,6 @@ function metaDescription(name:string,base:string){
   const lead=`${name} on Roblox: live player count, creator info and the official Roblox play link.`;
   const text=clean?`${lead} ${clean}`:lead;
   return text.length>160?`${text.slice(0,157).trimEnd()}...`:text;
-}
-function relatedQuery(name:string,genre:string){
-  const clean=name.replace(/\[[^\]]*\]|\([^)]*\)/g,' ').replace(/[^a-zA-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
-  const words=clean.split(' ').filter(word=>word.length>2).slice(0,4);
-  return words.join(' ')||genre||'Popular';
 }
 
 export async function generateMetadata({params}:{params:Promise<{universeId:string;slug:string}>}):Promise<Metadata>{
@@ -46,8 +41,6 @@ export default async function RobloxGamePage({params}:{params:Promise<{universeI
   const game=await fetchRobloxGame(universeId);
   if(!game)notFound();
   const canonicalPath=`/roblox/game/${game.universeId}/${robloxSlug(game.name)}`;
-  const query=relatedQuery(game.name,game.genre);
-  const related=(await fetchRobloxSearch(query)).filter(item=>item.universeId!==game.universeId).slice(0,10);
   const updated=dateLabel(game.updated),created=dateLabel(game.created);
   const matchingCollections=robloxSeoCollections.filter(item=>{
     const haystack=`${game.name} ${game.genre}`.toLowerCase();
@@ -90,7 +83,6 @@ export default async function RobloxGamePage({params}:{params:Promise<{universeI
     </section>
     <section className="robloxStatsPanel" aria-label={`${game.name} Roblox statistics`}><div><span>Playing now</span><strong>{compact(game.playing)}</strong></div><div><span>Total visits</span><strong>{compact(game.visits)}</strong></div><div><span>Favorites</span><strong>{compact(game.favoritedCount)}</strong></div><div><span>Max server</span><strong>{game.maxPlayers||'—'}</strong></div></section>
     <section className="robloxSeoSection robloxArticle"><div className="robloxKicker">ABOUT THIS EXPERIENCE</div><h2>About {game.name}</h2><p>{game.description||`${game.name} is a Roblox experience created by ${game.creatorName}. Use the official Roblox link above to view and play the latest version.`}</p><div className="robloxFacts"><span><b>Creator</b>{game.creatorName}</span><span><b>Genre</b>{game.genre||'All'}</span>{created?<span><b>Created</b>{created}</span>:null}{updated?<span><b>Last updated</b>{updated}</span>:null}</div><p>Player activity, visits and other stats can change as Roblox updates its data. MADGAMES refreshes these details periodically rather than storing a permanent snapshot.</p></section>
-    <section className="robloxSeoSection"><div className="robloxResultsHead"><div><span className="robloxKicker">RELATED DISCOVERY</span><h2>More Roblox games like {game.name}</h2></div></div>{related.length?<div className="robloxGrid">{related.map(item=><article key={item.universeId} className="robloxCard"><Link href={robloxGamePath(item)} className="robloxThumbLink">{item.thumbnailUrl?<img src={item.thumbnailUrl} alt={`${item.name} Roblox game`} className="robloxThumb" loading="lazy"/>:<div className="robloxThumb robloxThumbFallback">R</div>}<span className="robloxPlayBadge">View game</span></Link><div className="robloxCardBody"><h3><Link className="robloxTitleLink" href={robloxGamePath(item)}>{item.name}</Link></h3><div className="robloxStats"><span>● {compact(item.playerCount)} playing</span></div><a className="robloxLaunch" href={item.robloxUrl} target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a></div></article>)}</div>:<p>Browse the Roblox collections below to find another experience.</p>}</section>
     <section className="robloxSeoSection"><div className="robloxResultsHead"><div><span className="robloxKicker">BROWSE BY INTEREST</span><h2>Roblox game collections</h2></div></div><div className="robloxTopicGrid">{collections.map(item=><Link key={item.slug} href={`/roblox/category/${item.slug}`}><strong>{item.title}</strong><span>{item.description}</span></Link>)}</div></section>
     <section className="robloxSeoSection robloxArticle"><h2>{game.name} FAQ</h2>{faqs.map(item=><div key={item.q} className="robloxFaq"><h3>{item.q}</h3><p>{item.a}</p></div>)}<p>Helpful guides: <Link href="/guides/how-to-download-and-play-roblox-games">How to download and play Roblox games</Link> · <Link href="/guides/how-to-find-and-redeem-roblox-game-codes">How to find and redeem Roblox game codes</Link> · <Link href="/guides/how-to-find-good-roblox-games">How to find good Roblox games</Link></p></section>
     <p className="robloxDisclaimer">Roblox and the individual experiences listed here are owned and operated by Roblox and their respective creators. MADGAMES is an independent discovery site and is not Roblox.</p>

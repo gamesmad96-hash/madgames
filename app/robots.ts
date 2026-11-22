@@ -15,7 +15,9 @@ export default function robots():MetadataRoute.Robots{
       {
         userAgent:'*',
         allow:'/',
-        disallow:['/admin/','/api/','/search?']
+        // /roblox/game and /roblox/category are auto-generated from Roblox data and were
+        // being crawled by bots by the tens of thousands (fake traffic, 0s engagement).
+        disallow:['/admin/','/api/','/search?','/roblox/game/','/roblox/category/']
       }
     ],
     sitemap:`${base}/sitemap.xml`,

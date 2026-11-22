@@ -89,11 +89,11 @@ export default async function RobloxTrafficGuidePage({params}:{params:Promise<{s
       <div className="robloxResultsHead"><div><span className="robloxKicker">LIVE ROBLOX DISCOVERY</span><h2 id="live-guide-results">{games.length?`${games.length} games to explore now`:'Roblox results'}</h2></div><span className="robloxCount">Query: {guide.query}</span></div>
       <p className="robloxSeoIntro">These are live discovery results, not a fixed 1–40 ranking. Open a MADGAMES detail page to compare current activity, creator information and the official Roblox play link.</p>
       {games.length?<div className="robloxGrid">{games.map(game=>{const score=rating(game.totalUpVotes,game.totalDownVotes);const path=robloxGamePath(game);return <article key={game.universeId} className="robloxCard">
-        <Link href={path} className="robloxThumbLink" aria-label={`View ${game.name} details`}>
+        <Link href={path} rel="nofollow" className="robloxThumbLink" aria-label={`View ${game.name} details`}>
           {game.thumbnailUrl?<img src={game.thumbnailUrl} alt={`${game.name} Roblox game`} className="robloxThumb" loading="lazy"/>:<div className="robloxThumb robloxThumbFallback">R</div>}
           <span className="robloxPlayBadge">View game</span>
         </Link>
-        <div className="robloxCardBody"><h3><Link className="robloxTitleLink" href={path}>{game.name}</Link></h3><div className="robloxStats"><span>● {compact(game.playerCount)} playing</span>{score!==null?<span>👍 {score}%</span>:null}</div><a className="robloxLaunch" href={game.robloxUrl} target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a></div>
+        <div className="robloxCardBody"><h3><Link className="robloxTitleLink" rel="nofollow" href={path}>{game.name}</Link></h3><div className="robloxStats"><span>● {compact(game.playerCount)} playing</span>{score!==null?<span>👍 {score}%</span>:null}</div><a className="robloxLaunch" href={game.robloxUrl} target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a></div>
       </article>})}</div>:<div className="robloxStatus">Roblox results are temporarily unavailable. This page will refresh automatically.</div>}
     </section>
 

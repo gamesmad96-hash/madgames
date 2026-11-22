@@ -28,7 +28,7 @@ export default async function RobloxPage() {
       <section className="robloxSeoSection" aria-labelledby="roblox-directory-title">
         <div className="robloxResultsHead"><div><span className="robloxKicker">CRAWLABLE DIRECTORY</span><h2 id="roblox-directory-title">Browse Roblox games on MADGAMES</h2></div></div>
         <p className="robloxSeoIntro">Open an individual game page for details, current activity and its official Roblox launch link. These server-rendered links also help search engines discover the Roblox directory beyond the live search interface.</p>
-        {popular.length?<div className="robloxTextGameGrid">{popular.slice(0,30).map(game=><Link key={game.universeId} href={robloxGamePath(game)}><span>{game.name}</span><small>{game.playerCount.toLocaleString('en')} playing</small></Link>)}</div>:null}
+        {popular.length?<div className="robloxTextGameGrid">{popular.slice(0,30).map(game=><Link key={game.universeId} href={robloxGamePath(game)} rel="nofollow"><span>{game.name}</span><small>{game.playerCount.toLocaleString('en')} playing</small></Link>)}</div>:null}
       </section>
       <section className="robloxSeoSection" aria-labelledby="roblox-categories-title">
         <div className="robloxResultsHead"><div><span className="robloxKicker">EXPLORE BY INTEREST</span><h2 id="roblox-categories-title">Roblox game categories</h2></div><span className="robloxCount">{robloxSeoCollections.length} discovery hubs</span></div>

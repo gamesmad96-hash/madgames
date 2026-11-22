@@ -65,11 +65,11 @@ export default async function RobloxCollectionPage({params}:{params:Promise<{slu
     <section className="robloxResults">
       <div className="robloxResultsHead"><div><span className="robloxKicker">LIVE RESULTS</span><h2>{games.length?`${games.length} ${collection.query} games to explore`:'Roblox results'}</h2></div></div>
       {games.length?<div className="robloxGrid">{games.map(game=>{const score=rating(game.totalUpVotes,game.totalDownVotes);const path=robloxGamePath(game);return <article key={game.universeId} className="robloxCard">
-        <Link href={path} className="robloxThumbLink" aria-label={`View ${game.name} details on MADGAMES`}>
+        <Link href={path} rel="nofollow" className="robloxThumbLink" aria-label={`View ${game.name} details on MADGAMES`}>
           {game.thumbnailUrl?<img src={game.thumbnailUrl} alt={`${game.name} Roblox game`} className="robloxThumb" loading="lazy"/>:<div className="robloxThumb robloxThumbFallback">R</div>}
           <span className="robloxPlayBadge">View game</span>
         </Link>
-        <div className="robloxCardBody"><h3><Link className="robloxTitleLink" href={path}>{game.name}</Link></h3><div className="robloxStats"><span>● {compact(game.playerCount)} playing</span>{score!==null?<span>👍 {score}%</span>:null}</div><a className="robloxLaunch" href={game.robloxUrl} target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a></div>
+        <div className="robloxCardBody"><h3><Link className="robloxTitleLink" rel="nofollow" href={path}>{game.name}</Link></h3><div className="robloxStats"><span>● {compact(game.playerCount)} playing</span>{score!==null?<span>👍 {score}%</span>:null}</div><a className="robloxLaunch" href={game.robloxUrl} target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a></div>
       </article>})}</div>:<div className="robloxStatus">Roblox results are temporarily unavailable. This page will refresh automatically.</div>}
     </section>
     <section className="robloxSeoSection"><div className="robloxResultsHead"><div><span className="robloxKicker">KEEP EXPLORING</span><h2>More Roblox game categories</h2></div></div><div className="robloxTopicGrid">{related.map(item=><Link key={item.slug} href={`/roblox/category/${item.slug}`}><strong>{item.title}</strong><span>{item.description}</span></Link>)}</div></section>
