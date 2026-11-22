@@ -1,7 +1,10 @@
+import {curatedGuides} from './guides-curated';
+
 export type GuideSection={
   heading:string;
   paragraphs:string[];
   bullets?:string[];
+  picks?:Array<{slug:string;title:string;note:string}>;
 };
 
 export type Guide={
@@ -16,7 +19,7 @@ export type Guide={
   relatedCategories:Array<{name:string;slug:string}>;
 };
 
-export const guides:Guide[]=[
+const baseGuides:Guide[]=[
   {
     slug:'how-to-choose-a-browser-game',
     title:'How to Choose a Browser Game for Your Play Style',
@@ -412,6 +415,9 @@ export const guides:Guide[]=[
   }
 ];
 
+
+// Newest, hand-curated guides first so they appear on the homepage.
+export const guides:Guide[]=[...curatedGuides,...baseGuides];
 
 export function getGuide(slug:string){return guides.find(g=>g.slug===slug)}
 

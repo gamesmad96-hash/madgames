@@ -70,6 +70,7 @@ export default async function GuidePage({params}:{params:Promise<{slug:string}>}
         <h2>{section.heading}</h2>
         {section.paragraphs.map(paragraph=><p key={paragraph}>{paragraph}</p>)}
         {section.bullets?.length?<ul>{section.bullets.map(item=><li key={item}>{item}</li>)}</ul>:null}
+        {section.picks?.length?<ul>{section.picks.map(pick=><li key={pick.slug}><Link href={`/game/${pick.slug}`}><b>{pick.title}</b></Link> — {pick.note}</li>)}</ul>:null}
       </section>)}
     </article>
 
