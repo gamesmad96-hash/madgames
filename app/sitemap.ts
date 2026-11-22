@@ -1,9 +1,8 @@
 import type {MetadataRoute} from 'next';
 import {getGames,getCategories} from '@/lib/catalog';
 import {guides} from '@/lib/guides';
-import {seoTopics} from '@/lib/seo-topics';
-import {fetchRobloxIndex,robloxGamePath,robloxSeoCollections} from '@/lib/roblox-seo';
 import {robloxTrafficGuides} from '@/lib/roblox-guides';
+import {MIN_INDEXABLE_CATEGORY_GAMES} from '@/lib/index-policy';
 
 function cleanBase(value:string){return value.replace(/\/$/,'')}
 function categorySlug(value:string){return value.toLowerCase().trim().replaceAll(' ','-')}
@@ -18,24 +17,11 @@ function latest(dates:Array<Date|undefined>){
   return new Date(Math.max(...valid.map(d=>d.getTime())));
 }
 
-// Regenerate hourly at runtime so Roblox game URLs are included even if the build-time fetch returns nothing.
 export const revalidate=3600;
-
-async function getRobloxSitemapGames(){
-  const unique=new Map<string,{universeId:string;rootPlaceId:string;name:string}>();
-  const seeds=robloxSeoCollections.slice(0,36);
-  for(let i=0;i<seeds.length;i+=6){
-    const batch=await Promise.all(seeds.slice(i,i+6).map(item=>fetchRobloxIndex(item.query)));
-    for(const games of batch){
-      for(const game of games){if(!unique.has(game.universeId))unique.set(game.universeId,game)}
-    }
-  }
-  return [...unique.values()].slice(0,1400);
-}
 
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   const base=cleanBase(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun');
-  const [games,cats,robloxGames]=await Promise.all([getGames(5000),getCategories(),getRobloxSitemapGames()]);
+  const [games,cats]=await Promise.all([getGames(5000),getCategories()]);
   const latestCatalogUpdate=latest(games.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
   const latestGuideUpdate=latest(guides.map(guide=>validDate(guide.updatedAt)));
 
@@ -69,17 +55,11 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.8
   }));
 
-  const topicUrls:MetadataRoute.Sitemap=seoTopics.map(topic=>({
-    url:`${base}/play/${topic.slug}`,
-    lastModified:latestCatalogUpdate,
-    changeFrequency:'weekly',
-    priority:.8
-  }));
-
-  const categories:MetadataRoute.Sitemap=cats.map(c=>{
+  const categories:MetadataRoute.Sitemap=cats.flatMap(c=>{
     const categoryGames=games.filter(g=>categorySlug(g.category)===c.slug||(g.categories||[]).some(name=>categorySlug(name)===c.slug));
+    if(categoryGames.length<MIN_INDEXABLE_CATEGORY_GAMES)return [];
     const lastModified=latest(categoryGames.map(g=>validDate(g.updatedAt)||validDate(g.publishedAt)));
-    return {url:`${base}/category/${c.slug}`,lastModified,changeFrequency:'daily' as const,priority:.75};
+    return [{url:`${base}/category/${c.slug}`,lastModified,changeFrequency:'daily' as const,priority:.75}];
   });
 
   const gameUrls:MetadataRoute.Sitemap=games.map(g=>({
@@ -89,17 +69,6 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     priority:.8
   }));
 
-  const robloxCategoryUrls:MetadataRoute.Sitemap=robloxSeoCollections.map(item=>({
-    url:`${base}/roblox/category/${item.slug}`,
-    changeFrequency:'daily' as const,
-    priority:.76
-  }));
-
-  const robloxGameUrls:MetadataRoute.Sitemap=robloxGames.map(game=>({
-    url:`${base}${robloxGamePath(game)}`,
-    changeFrequency:'daily' as const,
-    priority:.72
-  }));
-
-  return [...fixed,...robloxGuideUrls,...robloxCategoryUrls,...robloxGameUrls,...guideUrls,...topicUrls,...categories,...gameUrls];
+  // Roblox game/category pages and /play collections are auto-generated and noindexed, so they are not listed.
+  return [...fixed,...robloxGuideUrls,...guideUrls,...categories,...gameUrls];
 }

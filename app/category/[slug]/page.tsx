@@ -6,6 +6,7 @@ import {getCategorySeoCopy} from '@/lib/seo-content';
 import {getGuidesForCategory} from '@/lib/guides';
 import {getTopicsForCategory} from '@/lib/seo-topics';
 import {GameCard} from '@/components/GameCard';
+import {MIN_INDEXABLE_CATEGORY_GAMES} from '@/lib/index-policy';
 
 const siteUrl=(process.env.NEXT_PUBLIC_SITE_URL||'https://www.madgames.fun').replace(/\/$/,'');
 
@@ -16,8 +17,9 @@ function categoryDescription(name:string){
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const {slug}=await params;
-  const {category}=await getByCategory(slug);
+  const {category,games}=await getByCategory(slug);
   if(!category)return{};
+  const thin=games.length<MIN_INDEXABLE_CATEGORY_GAMES;
   const description=categoryDescription(category.name);
   const seoTitle=category.seoTitle||`Free ${category.name} Games Online — Play Instantly`;
   return{
@@ -25,6 +27,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
     description,
     keywords:[`free ${category.name.toLowerCase()} games`,`${category.name.toLowerCase()} games online`,'browser games','free online games'],
     alternates:{canonical:`/category/${slug}`},
+    robots:thin?{index:false,follow:true}:undefined,
     openGraph:{title:`${seoTitle} | MADGAMES.FUN`,description,url:`/category/${slug}`,images:[{url:'/og-image.png',width:1200,height:630,alt:`Free ${category.name} games on MADGAMES.FUN`}]},
     twitter:{card:'summary_large_image',title:seoTitle,description,images:['/og-image.png']}
   };

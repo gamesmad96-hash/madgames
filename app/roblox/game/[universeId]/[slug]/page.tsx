@@ -12,7 +12,7 @@ function compact(value:number){return new Intl.NumberFormat('en',{notation:'comp
 function dateLabel(value:string|null){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:new Intl.DateTimeFormat('en',{year:'numeric',month:'short',day:'numeric'}).format(d)}
 function metaDescription(name:string,base:string){
   const clean=base.replace(/\s+/g,' ').trim();
-  const lead=`How to play ${name} on Roblox, download info, where to find codes, live players and the official play link.`;
+  const lead=`${name} on Roblox: live player count, creator info and the official Roblox play link.`;
   const text=clean?`${lead} ${clean}`:lead;
   return text.length>160?`${text.slice(0,157).trimEnd()}...`:text;
 }
@@ -28,10 +28,12 @@ export async function generateMetadata({params}:{params:Promise<{universeId:stri
   if(!game)return{};
   const slug=robloxSlug(game.name);
   const description=metaDescription(game.name,game.description);
-  const title=`${game.name} Roblox — How to Play, Download & Codes Info`;
+  const title=`${game.name} on Roblox — Game Info & Official Link`;
+  // Auto-generated from Roblox data: kept out of Google's index (thin/scaled content for AdSense).
   return{
     title,
     description,
+    robots:{index:false,follow:true},
     keywords:[`${game.name} Roblox`,`${game.name} game`,`play ${game.name}`,`${game.name} Roblox game`,'Roblox games'],
     alternates:{canonical:`/roblox/game/${game.universeId}/${slug}`},
     openGraph:{title:`${title} | MADGAMES.FUN`,description,url:`/roblox/game/${game.universeId}/${slug}`,images:game.thumbnailUrl?[{url:game.thumbnailUrl,alt:`${game.name} Roblox game thumbnail`}]:undefined},

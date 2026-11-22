@@ -18,9 +18,11 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   if(!collection)return{};
   const title=`${collection.title} — Browse & Play`;
   const description=`${collection.description} Browse live Roblox results on MADGAMES.FUN and open each experience on the official Roblox platform.`;
+  // Auto-generated listing of live Roblox search results: noindex.
   return{
     title,
     description,
+    robots:{index:false,follow:true},
     keywords:[collection.title,`${collection.query} Roblox games`,`best ${collection.query.toLowerCase()} Roblox games`,'Roblox games'],
     alternates:{canonical:`/roblox/category/${collection.slug}`},
     openGraph:{title:`${title} | MADGAMES.FUN`,description,url:`/roblox/category/${collection.slug}`},

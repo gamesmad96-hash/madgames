@@ -16,6 +16,8 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   return{
     title:topic.title,
     description:topic.metaDescription,
+    // Templated collections reuse the same small catalog: noindex to avoid duplicate/doorway content.
+    robots:{index:false,follow:true},
     keywords:[topic.h1.toLowerCase(),'free online games','browser games','no download games',...topic.terms],
     alternates:{canonical:`/play/${topic.slug}`},
     openGraph:{title:`${topic.title} | MADGAMES.FUN`,description:topic.metaDescription,url:`/play/${topic.slug}`},
