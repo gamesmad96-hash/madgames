@@ -4,6 +4,73 @@ import type {Guide} from './guides';
 // Each pick links to its game page; notes describe what the game actually asks of the player.
 export const curatedGuides:Guide[]=[
   {
+    slug:'cooking-shop-and-tycoon-management-games',
+    title:'Cooking, Shop and Tycoon Games: Serve Customers and Grow a Business',
+    description:'Hand-picked cooking, restaurant, supermarket and tycoon games on MADGAMES.FUN, grouped by pace: fast order-serving games, shops you build up, idle tycoons and calm no-rush games.',
+    summary:'Management games all share one loop: serve customers, earn money, reinvest it. What changes is the pace. We split our picks into rush-hour cooking games, shops you expand step by step, idle tycoons and relaxed games with no pressure.',
+    publishedAt:'2026-11-25',
+    updatedAt:'2026-11-25',
+    sections:[
+      {
+        heading:'How to get good at any management game',
+        paragraphs:[
+          'Almost every cooking or shop game runs on the same loop: a customer arrives, you fill their order, you get paid, and you spend that money on something that makes the next order faster or more valuable. Once you see that loop, a few habits help in every game on this list.',
+          'First, spend early money on speed rather than looks. A faster station or an extra worker pays for itself many times over, while decorations usually only matter once the business is already running smoothly. Second, never let a customer wait while you upgrade: serve the queue first, then shop. Third, in games with several stations or counters, finish one area properly before unlocking the next, because a half-stocked shop loses customers in two places at once.'
+        ]
+      },
+      {
+        heading:'Rush-hour cooking: read the order, then move fast',
+        paragraphs:[
+          'These games are about speed and accuracy under a patience timer. The most common mistake is grabbing ingredients before reading the whole order. Take half a second to check every part of the request, then build it in one go; a wrong item usually costs more time than the pause did.'
+        ],
+        picks:[
+          {slug:'ice-cream-vendor',title:'Ice Cream Vendor',note:'Run an ice cream stand: pick the right cone, scoop the flavours in the order the customer asked for and add their toppings before they run out of patience. Orders get longer as the day gets busier.'},
+          {slug:'monster-chef',title:'Monster Chef',note:'A fast kitchen with robot monster customers. Ingredients move past you, so you have to plan which one to grab next and combine them into the requested dish. The pace builds as you go.'},
+          {slug:'stickman-restaurant-rush-game',title:'Stickman Restaurant Rush Game',note:'Play a stickman chef who takes orders, prepares meals and serves customers, then spends the earnings on kitchen upgrades. A good middle ground between pure speed and slow building.'}
+        ]
+      },
+      {
+        heading:'Shops and restaurants you grow step by step',
+        paragraphs:[
+          'In these games the reward is watching a tiny counter turn into a busy store. Stock is the bottleneck: an empty shelf means a lost sale, so keep your best-selling items topped up before you unlock new products. When a game lets you hire staff, do it as soon as you can afford it, since workers keep the shop running while you handle the next job.'
+        ],
+        picks:[
+          {slug:'mimi-fish-market',title:'Mimi Fish Market',note:'Mimi the cat takes over a small fish stall on a pier. Catch fish, keep the counters stocked and serve customers, then spend coins on new counters and products until the stall becomes a busy shop.'},
+          {slug:'supermarket-management-simulator',title:'Supermarket Management Simulator',note:'Build a store from scratch: stock shelves, serve customers at the checkout and use profits to add new products and sections.'},
+          {slug:'my-mini-mart-3d',title:'My Mini Mart 3D',note:'A supermarket game with a twist: you grow fresh crops as well as stocking shelves. Earnings pay for expansion, new products and hired help.'},
+          {slug:'my-restaurant',title:'My Restaurant',note:'Turn a small dining room into a busy restaurant by buying furniture, cooking stations and decorations. You can design the space your way, which makes it more relaxed than the rush-hour games.'}
+        ]
+      },
+      {
+        heading:'Tycoon and idle games: long-term planning',
+        paragraphs:[
+          'Tycoon games are less about reflexes and more about deciding what to upgrade next. A useful rule is to look for the slowest part of your business and fix that first: if cars or customers are queuing at one station, a new station elsewhere will not help. Idle games also reward short, regular visits, because earnings pile up while you are away.'
+        ],
+        picks:[
+          {slug:'garage-tycoon-3d',title:'Garage Tycoon 3D',note:'Run a car service garage that fixes dirt, flat tyres, dents, oil leaks and more. You open bays, hire workers and expand across a suburb, a city and a highway, with $40 million as the final goal. Progress saves automatically.'},
+          {slug:'cars-tycoon',title:'Cars Tycoon',note:'Open shops along a highway, hire and upgrade staff, and reinvest as more traffic brings more cars. Easy to start and grows steadily.'},
+          {slug:'your-idle-farm',title:'Your Idle Farm',note:'Grow a single wheat patch into a farming valley with chickens, cows and bees, and turn produce into bread, cheese, jam and juice in workshops. The farm keeps earning while you are away.'}
+        ]
+      },
+      {
+        heading:'No-rush picks for a calm session',
+        paragraphs:[
+          'Not every management game needs a stopwatch. If you want the satisfying part of serving customers without the stress, these two focus on doing each job properly rather than quickly.'
+        ],
+        picks:[
+          {slug:'lovely-cat-dessert-bakery',title:'Lovely Cat: Dessert Bakery',note:'Choose a recipe, mix ingredients, bake and decorate cakes and treats in a cat\'s bakery, then dress up the cat. A creative, relaxed game for animal fans.'},
+          {slug:'car-wash-simulator-summer-edition',title:'Car Wash Simulator Summer Edition',note:'Clean each customer\'s car in four steps: hose, sponge, polish and towel. Finishing every step properly is what earns rewards, so it is calm rather than hectic.'}
+        ]
+      }
+    ],
+    faqs:[
+      {question:'Which cooking game is the most fast-paced?',answer:'Monster Chef sends orders quickly and builds its pace as you go, and in Ice Cream Vendor customers lose patience while orders get longer through the day. Both suit players who enjoy time pressure.'},
+      {question:'Are there management games that keep progressing while I am away?',answer:'Your Idle Farm keeps earning while you are away, and Garage Tycoon 3D saves your progress automatically, so both work well for short repeat visits.'},
+      {question:'Which games here have no time pressure?',answer:'Lovely Cat: Dessert Bakery and Car Wash Simulator Summer Edition are about doing each step properly, and My Restaurant lets you design and grow at your own pace.'}
+    ],
+    relatedCategories:[{name:'Casual',slug:'casual'},{name:'Girls',slug:'girls'},{name:'Adventure',slug:'adventure'},{name:'Arcade',slug:'arcade'}]
+  },
+  {
     slug:'best-puzzle-games-to-play-online',
     title:'Best Free Puzzle Games on MADGAMES.FUN, Sorted by Puzzle Type',
     description:'A hand-picked list of the best free puzzle games on MADGAMES.FUN, grouped by type: mahjong and solitaire, block puzzles, sorting games and physics or drawing puzzles.',
